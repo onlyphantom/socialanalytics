@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -41,12 +42,19 @@ export default function Home() {
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
           <a href="https://www.bi.go.id">
             <span className={styles.logo}>
-              <Image src="/bi-b.png" alt="Bank Indonesia Logo" width={220.1} height={69.7} />
+              <Image src="/bi-b.png" alt="Bank Indonesia Logo" className='grayscale brightness-200' width={220.1} height={69.7} />
             </span>
           </a>
 
-          <li><a>Sidebar Item 1</a></li>
-          <li><a>Sidebar Item 2</a></li>
+          <li>
+            <Link href="/overview">
+              <a>Overview</a>
+            </Link>
+          </li>
+          <li><a>Facebook</a></li>
+          <li><a>Instagram</a></li>
+          <li><a>Twitter</a></li>
+          <li><a>YouTube</a></li>
         </ul>
       </div>
 
