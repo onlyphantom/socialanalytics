@@ -1,12 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project that implements the front end of a social media analytics platform.
+
+- [Figma](https://www.figma.com/file/FVGmRpbw7RkFKHKZOzZVRL/Bank-Indonesia?node-id=0%3A1)
+
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
