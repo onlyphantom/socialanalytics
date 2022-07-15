@@ -19,7 +19,7 @@ export default function Home() {
           <div>
             {/* <!-- Page content here --> */}
             <h1 className={styles.title}>
-              Welcome to <a href="https://supertype.ai">Supertype</a>
+              <a href="https://supertype.ai">Social Analytics</a>
             </h1>
             <label for="side-drawer" className="btn btn-primary drawer-button lg:hidden">Open</label>
           </div>
@@ -29,10 +29,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Powered by{' '}
-              <span className={styles.logo}>
-                <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-              </span>
+              Powered by Supertype
             </a>
           </footer>
         </main>
@@ -40,11 +37,19 @@ export default function Home() {
       <div className="drawer-side">
         <label for="side-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-          <a href="https://www.bi.go.id">
-            <span className={styles.logo}>
-              <Image src="/bi-b.png" alt="Bank Indonesia Logo" className='grayscale brightness-200' width={220.1} height={69.7} />
-            </span>
-          </a>
+          <Link href="/">
+            <a>
+              <span className={styles.logo}>
+                <Image
+                  src="/bi-b.png"
+                  alt="Bank Indonesia Logo"
+                  className="grayscale brightness-200"
+                  width={220.1}
+                  height={69.7}
+                />
+              </span>
+            </a>
+          </Link>
 
           <li>
             <Link href="/overview">
