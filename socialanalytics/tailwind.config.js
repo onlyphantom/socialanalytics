@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    maxWidth: {
+      "xxs": "10rem",
+    }
   },
   plugins: [require("daisyui")],
 }

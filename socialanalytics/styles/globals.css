@@ -18,3 +18,9 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.react-datepicker-wrapper input {
+    background: inherit;
+    border: 1px solid;
+    text-align: center;
+}
