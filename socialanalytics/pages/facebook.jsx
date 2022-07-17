@@ -3,11 +3,13 @@ import Layout from "../components/Layout";
 
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
+import { format } from "date-fns";
 
 import id from "date-fns/locale/id";
 registerLocale("id", id);
 
 import "react-datepicker/dist/react-datepicker.css";
+import DonutPercent from "../components/DonutPercent";
 
 const facebook = () => {
   const [startDate, setStartDate] = useState(new Date("2022/01/01"));
@@ -83,7 +85,7 @@ const facebook = () => {
         </div>
       </section>
 
-      <section className="grid grid-cols-11 my-4">
+      <section className="grid grid-cols-12 my-4">
         <div className="col-span-4">
           <h5>Comments' Sentiment Analysis</h5>
         </div>
@@ -112,6 +114,39 @@ const facebook = () => {
             showMonthDropdown
             className="col-span-1 max-w-xxs"
           />
+        </div>
+      </section>
+
+      <section className="grid grid-cols-12 my-4">
+        <div className="col-span-4">
+          <DonutPercent />
+        </div>
+        <div className="col-start-7 col-span-5">
+          <div class="stats stats-vertical shadow">
+            <div class="stat">
+              <div class="stat-title">Positive Reactions</div>
+              <div class="stat-value">11,614</div>
+              <div class="stat-desc">
+                {format(startDate, "MMMM do, yyyy")} -
+                {format(endDate, "MMMM do, yyyy")}
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">Positive Comments</div>
+              <div class="stat-value">1,106</div>
+              <div class="stat-desc">
+                {format(startDate, "MMMM do, yyyy")} -
+                {format(endDate, "MMMM do, yyyy")}
+              </div>
+            </div>
+
+            {/* <div class="stat">
+              <div class="stat-title">New Registers</div>
+              <div class="stat-value">1,200</div>
+              <div class="stat-desc">↘︎ 90 (14%)</div>
+            </div> */}
+          </div>
         </div>
       </section>
     </Layout>
