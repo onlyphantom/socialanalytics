@@ -13,6 +13,7 @@ import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
 
 import faker from "faker";
+import Table from "../components/Table";
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
 const data = {
@@ -187,6 +188,16 @@ const facebook = () => {
         <div className="col-span-6">
           <h5>Engagement Rate Analysis</h5>
           <EngagementLine data={data} />
+        </div>
+        <div className="col-span-6 ml-5">
+          <h5>Significant Variables</h5>
+          <div class="tabs">
+            <a class="tab tab-bordered">Positive</a>
+            <a class="tab tab-bordered tab-active">Negative</a>
+          </div>
+          <div class="tab-content">
+            <Table />
+          </div>
         </div>
       </section>
     </Layout>
