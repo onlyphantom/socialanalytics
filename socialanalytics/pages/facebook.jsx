@@ -10,6 +10,40 @@ registerLocale("id", id);
 
 import "react-datepicker/dist/react-datepicker.css";
 import DonutPercent from "../components/DonutPercent";
+import EngagementLine from "../components/EngagementLine";
+
+import faker from "faker";
+
+const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const data = {
+  labels,
+  datasets: [
+    {
+      label: "Total",
+      data: labels.map(() => faker.datatype.number({ min: 500, max: 2000 })),
+      borderColor: "rgb(255, 99, 132)",
+      backgroundColor: "rgba(255, 99, 132, 0.5)",
+    },
+    {
+      label: "Favorites",
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: "rgb(75, 192, 192)",
+      backgroundColor: "rgba(75, 192, 192, 0.5)",
+    },
+    {
+      label: "Comments",
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: "rgb(53, 162, 235)",
+      backgroundColor: "rgba(53, 162, 235, 0.5)",
+    },
+    {
+      label: "Shares",
+      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
+      borderColor: "rgb(23, 122, 74)",
+      backgroundColor: "rgba(23, 122, 74, 0.5)",
+    },
+  ],
+};
 
 const facebook = () => {
   const [startDate, setStartDate] = useState(new Date("2022/01/01"));
@@ -18,7 +52,7 @@ const facebook = () => {
   return (
     <Layout activePage="facebook">
       {/* <h1>Facebook</h1> */}
-      <section className="grid grid-cols-12 my-4">
+      <section className="grid grid-cols-12 my-5">
         <div className="stats shadow col-start-1 col-span-11">
           <div className="stat">
             <div className="stat-figure text-secondary">
@@ -85,7 +119,7 @@ const facebook = () => {
         </div>
       </section>
 
-      <section className="grid grid-cols-12 my-4">
+      <section className="grid grid-cols-12 my-5">
         <div className="col-span-4">
           <h5>Comments' Sentiment Analysis</h5>
         </div>
@@ -117,7 +151,7 @@ const facebook = () => {
         </div>
       </section>
 
-      <section className="grid grid-cols-12 my-4">
+      <section className="grid grid-cols-12 my-5">
         <div className="col-span-4">
           <DonutPercent />
         </div>
@@ -147,6 +181,12 @@ const facebook = () => {
               <div class="stat-desc">↘︎ 90 (14%)</div>
             </div> */}
           </div>
+        </div>
+      </section>
+      <section className="grid grid-cols-12 my-5">
+        <div className="col-span-6">
+          <h5>Engagement Rate Analysis</h5>
+          <EngagementLine data={data} />
         </div>
       </section>
     </Layout>
