@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import Layout from "../components/Layout";
 
 import DatePicker from "react-datepicker";
@@ -14,6 +14,12 @@ import EngagementLine from "../components/EngagementLine";
 
 import faker from "faker";
 import Table from "../components/Table";
+import DropDownFilter from "../components/DropDownFilter";
+
+const profile_options = [
+  { value: 'Bank Indonesia', label: 'Bank Indonesia' },
+  { value: 'Bank Indonesia Jabar', label: 'Bank Indonesia Jabar' }
+];
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
 const data = {
@@ -53,6 +59,12 @@ const facebook = () => {
   return (
     <Layout activePage="facebook">
       {/* <h1>Facebook</h1> */}
+      <section className="grid grid-cols-12">
+        <div className="col-start-9 col-span-3">
+          <DropDownFilter options={profile_options}/>
+        </div>
+      </section>
+
       <section className="grid grid-cols-12 my-5">
         <div className="stats shadow col-start-1 col-span-11">
           <div className="stat">
