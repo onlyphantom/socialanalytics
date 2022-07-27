@@ -1,5 +1,7 @@
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import Layout from "../components/Layout";
+
+import Select from "react-select";
 
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
@@ -14,12 +16,40 @@ import EngagementLine from "../components/EngagementLine";
 
 import faker from "faker";
 import Table from "../components/Table";
-import DropDownFilter from "../components/DropDownFilter";
 
-const profile_options = [
-  { value: 'Bank Indonesia', label: 'Bank Indonesia' },
-  { value: 'Bank Indonesia Jabar', label: 'Bank Indonesia Jabar' }
-];
+import APICall from "../APICall";
+
+const customStyles = {
+  input: (base) => ({
+    ...base,
+    color: "inherit"
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: state.isFocused ? "white": "black",
+    backgroundColor: state.isFocused ? "#216ba5" : "white"
+  }),
+  control: (base, state) => ({
+    ...base,
+    background: "inherit",
+    borderColor: state.isFocused ? "white" : "white",
+    borderRadius: state.isFocused ? 0 : 0,
+    boxShadow: state.isFocused ? null : null,
+    "&:hover": {
+      color: "white"
+    }
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: "inherit"
+  }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    "&:hover": {
+      color: "white"
+    }
+  })
+};
 
 const labels = ["January", "February", "March", "April", "May", "June", "July"];
 const data = {
@@ -55,13 +85,43 @@ const data = {
 const facebook = () => {
   const [startDate, setStartDate] = useState(new Date("2022/01/01"));
   const [endDate, setEndDate] = useState(new Date("2022/01/14"));
+  const [selectedProfile, setSelectedProfile] = useState();
+  const [profiles, setProfiles] = useState();
+  const [profileOptions, setProfileOptions] = useState();
+
+  useEffect(() => {
+    APICall.getFacebookProfiles()
+      .then((response) => 
+        setProfiles(response.results)
+      )
+  }, []);
+
+  useEffect(() => {
+    let profile_options = [];
+
+    Array.isArray(profiles) && profiles.map((profile) => 
+      profile_options.push({
+          value: profile.account_id,
+          label: profile.name
+        })
+    );
+    setProfileOptions(profile_options);
+    setSelectedProfile(profile_options[0])
+  }, [profiles]);
 
   return (
     <Layout activePage="facebook">
       {/* <h1>Facebook</h1> */}
       <section className="grid grid-cols-12">
         <div className="col-start-9 col-span-3">
-          <DropDownFilter options={profile_options}/>
+          <Select 
+              options={profileOptions}
+              onChange={(selectedProfile) => {
+                setSelectedProfile(selectedProfile.value)
+              }}
+              placeholder="Select a profile.."
+              styles={customStyles}
+          />
         </div>
       </section>
 
@@ -169,29 +229,29 @@ const facebook = () => {
           <DonutPercent />
         </div>
         <div className="col-start-7 col-span-5">
-          <div class="stats stats-vertical shadow">
-            <div class="stat">
-              <div class="stat-title">Positive Reactions</div>
-              <div class="stat-value">11,614</div>
-              <div class="stat-desc">
+          <div className="stats stats-vertical shadow">
+            <div className="stat">
+              <div className="stat-title">Positive Reactions</div>
+              <div className="stat-value">11,614</div>
+              <div className="stat-desc">
                 {format(startDate, "MMMM do, yyyy")} -
                 {format(endDate, "MMMM do, yyyy")}
               </div>
             </div>
 
-            <div class="stat">
-              <div class="stat-title">Positive Comments</div>
-              <div class="stat-value">1,106</div>
-              <div class="stat-desc">
+            <div className="stat">
+              <div className="stat-title">Positive Comments</div>
+              <div className="stat-value">1,106</div>
+              <div className="stat-desc">
                 {format(startDate, "MMMM do, yyyy")} -
                 {format(endDate, "MMMM do, yyyy")}
               </div>
             </div>
 
-            {/* <div class="stat">
-              <div class="stat-title">New Registers</div>
-              <div class="stat-value">1,200</div>
-              <div class="stat-desc">↘︎ 90 (14%)</div>
+            {/* <div className="stat">
+              <div className="stat-title">New Registers</div>
+              <div className="stat-value">1,200</div>
+              <div className="stat-desc">↘︎ 90 (14%)</div>
             </div> */}
           </div>
         </div>
@@ -203,11 +263,11 @@ const facebook = () => {
         </div>
         <div className="col-span-6 ml-5">
           <h5>Significant Variables</h5>
-          <div class="tabs">
-            <a class="tab tab-bordered">Positive</a>
-            <a class="tab tab-bordered tab-active">Negative</a>
+          <div className="tabs">
+            <a className="tab tab-bordered">Positive</a>
+            <a className="tab tab-bordered tab-active">Negative</a>
           </div>
-          <div class="tab-content">
+          <div className="tab-content">
             <Table />
           </div>
         </div>
