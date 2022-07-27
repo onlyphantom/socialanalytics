@@ -21,7 +21,7 @@ export default function Home() {
             <h1 className={styles.title}>
               <a href="https://supertype.ai">Social Analytics</a>
             </h1>
-            <label for="side-drawer" className="btn btn-primary drawer-button lg:hidden">Open</label>
+            <label htmlFor="side-drawer" className="btn btn-primary drawer-button lg:hidden">Open</label>
           </div>
           <footer className={styles.footer}>
             <a
@@ -35,7 +35,7 @@ export default function Home() {
         </main>
       </div>{/* <!-- End of drawer --> */}
       <div className="drawer-side">
-        <label for="side-drawer" className="drawer-overlay"></label>
+        <label htmlFor="side-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
           <Link href="/">
             <a>
@@ -56,10 +56,26 @@ export default function Home() {
               <a>Overview</a>
             </Link>
           </li>
-          <li><a>Facebook</a></li>
-          <li><a>Instagram</a></li>
-          <li><a>Twitter</a></li>
-          <li><a>YouTube</a></li>
+          <li>
+            <Link href="/facebook">
+              <a>Facebook</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/instagram">
+              <a>Instagram</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/twitter">
+              <a>Twitter</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/youtube">
+              <a>YouTube</a>
+            </Link>
+          </li>
         </ul>
       </div>
 

@@ -42,7 +42,7 @@ const Layout = ({ children, activePage }) => {
           <div>
             {/* <!-- Page content here --> */}
             <label
-              for="side-drawer"
+              htmlFor="side-drawer"
               className="btn btn-primary drawer-button lg:hidden"
             >
               <svg
@@ -87,7 +87,7 @@ const Layout = ({ children, activePage }) => {
       </div>
       {/* <!-- End of drawer --> */}
       <div className="drawer-side">
-        <label for="side-drawer" className="drawer-overlay"></label>
+        <label htmlFor="side-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
           <Link href="/">
             <a>
