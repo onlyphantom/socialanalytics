@@ -51,6 +51,14 @@ const customStyles = {
   })
 };
 
+const formatNumber = n => {
+  if (n < 1e3) return n;
+  if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(1) + "K";
+  if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(1) + "M";
+  if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
+  if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
+};
+
 const facebook = () => {
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-3));
@@ -244,7 +252,7 @@ const facebook = () => {
                 </svg>
               </div>
               <div className="stat-title">Followers</div>
-              <div className="stat-value">{profile.follower_count === null ? "-" : profile.follower_count}</div>
+              <div className="stat-value">{profile.follower_count === null ? "-" : formatNumber(profile.follower_count)}</div>
               {/* <div className="stat-desc">Jan 1st - Feb 1st</div> */}
             </div>
   
@@ -265,7 +273,7 @@ const facebook = () => {
                 </svg>
               </div>
               <div className="stat-title">Following</div>
-              <div className="stat-value">{profile.following_count === null ? "-" : profile.following_count}</div>
+              <div className="stat-value">{profile.following_count === null ? "-" : formatNumber(profile.following_count)}</div>
               {/* <div className="stat-desc">↗︎ 400 (22%)</div> */}
             </div>
               
@@ -286,7 +294,7 @@ const facebook = () => {
                 </svg>
               </div>
               <div className="stat-title">Likes</div>
-              <div className="stat-value">{profile.likes === null ? "-" : profile.likes}</div>
+              <div className="stat-value">{profile.likes === null ? "-" : formatNumber(profile.likes)}</div>
               {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
             </div>
           </div>
@@ -372,7 +380,7 @@ const facebook = () => {
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
-                  <EngagementLine data={lineData} />
+                  <EngagementLine data={lineData} media="facebook"/>
                 </div>
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
