@@ -327,7 +327,7 @@ const instagram = () => {
                   <div className="stats stats-vertical shadow">
                   <div className="stat">
                       <div className="stat-title">Positive Comments</div>
-                      <div className="stat-value">{aggregate.sentiment_count.POSITIVE}</div>
+                      <div className="stat-value">{formatNumber(aggregate.sentiment_count.POSITIVE)}</div>
                       <div className="stat-desc">
                         {format(startDate, "MMMM do, yyyy")} -
                         {format(endDate, "MMMM do, yyyy")}
@@ -336,7 +336,7 @@ const instagram = () => {
 
                     <div className="stat">
                       <div className="stat-title">Positive Reactions</div> 
-                      <div className="stat-value">{aggregate.engagement_count.LIKES}</div>
+                      <div className="stat-value">{formatNumber(aggregate.engagement_count.LIKES)}</div>
                       <div className="stat-desc">
                         {format(startDate, "MMMM do, yyyy")} -
                         {format(endDate, "MMMM do, yyyy")}
@@ -385,7 +385,7 @@ const instagram = () => {
 
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-4">
-                  <div className="stat-title">No comments available.</div>  
+                  <div className="stat-title">No posts available.</div>  
                 </div>
               </section>
               </>
