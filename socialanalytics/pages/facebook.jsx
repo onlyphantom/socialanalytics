@@ -14,11 +14,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
 
-import faker from "faker";
 import Table from "../components/Table";
 
 import APICall from "../APICall";
-import { FacebookProfiles } from "../data/facebookProfiles";
+import { FacebookProfiles } from "../data/FacebookProfiles";
 
 const customStyles = {
   input: (base) => ({
@@ -54,9 +53,9 @@ const customStyles = {
 
 const facebook = () => {
   const [loading, setLoading] = useState(true);
-  const [startDate, setStartDate] = useState(new Date("2022/01/01"));
-  const [endDate, setEndDate] = useState(new Date("2022/01/14"));
-  const [selectedProfile, setSelectedProfile] = useState(FacebookProfiles[1]);
+  const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-3));
+  const [endDate, setEndDate] = useState(new Date());
+  const [selectedProfile, setSelectedProfile] = useState(FacebookProfiles[0]);
   const [profile, setProfile] = useState();
   const [posts, setPosts] = useState();
   const [comments, setComments] = useState();
@@ -82,7 +81,9 @@ const facebook = () => {
 
     APICall.getFacebookPosts(selectedProfile.value)
       .then((response) => {
-        setPosts(response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate));
+        let result = response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
+        result = Array.isArray(result) && result.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+        setPosts(result);
       })
 
     APICall.getFacebookComments(selectedProfile.value)
@@ -180,11 +181,7 @@ const facebook = () => {
       return obj;
     }, []);
 
-    favorite = Array.isArray(favorite) && favorite.sort((a,b) => a.x - b.x);
-    comment = Array.isArray(comment) && comment.sort((a,b) => a.x - b.x);
-    share = Array.isArray(share) && share.sort((a,b) => a.x - b.x);
-    total = Array.isArray(total) && total.sort((a,b) => a.x - b.x);
-    label = Array.isArray(label) && Array.from(new Set(label)).sort((a,b) => a-b);
+    label = Array.isArray(label) && Array.from(new Set(label))
     
     setAggregate({
       engagement_count: engagements,
@@ -213,7 +210,6 @@ const facebook = () => {
     return (
       <Layout activePage="facebook">
         {/* <h1>Facebook</h1> */}
-        {console.log(lineData)}
         <section className="grid grid-cols-12">
           <div className="col-start-9 col-span-3">
             <Select 
@@ -309,6 +305,7 @@ const facebook = () => {
               selectsStart
               startDate={startDate}
               endDate={endDate}
+              maxDate={new Date()}
               locale="id"
               showMonthDropdown
               className="col-span-1 max-w-xxs"
@@ -321,6 +318,7 @@ const facebook = () => {
               startDate={startDate}
               endDate={endDate}
               minDate={startDate}
+              maxDate={new Date()}
               locale="id"
               showMonthDropdown
               className="col-span-1 max-w-xxs"
@@ -369,22 +367,40 @@ const facebook = () => {
                )
             }
         </section>
-        <section className="grid grid-cols-12 my-5">
-          <div className="col-span-6">
-            <h5>Engagement Rate Analysis</h5>
-            <EngagementLine data={lineData} />
-          </div>
-          <div className="col-span-6 ml-5">
-            <h5>Significant Variables</h5>
-            <div className="tabs">
-              <a className="tab tab-bordered">Positive</a>
-              <a className="tab tab-bordered tab-active">Negative</a>
-            </div>
-            <div className="tab-content">
-              <Table />
-            </div>
-          </div>
-        </section>
+        {
+            Array.isArray(posts) && posts.length > 0 ? (
+              <section className="grid grid-cols-12 my-5">
+                <div className="col-span-6">
+                  <h5>Engagement Rate Analysis</h5>
+                  <EngagementLine data={lineData} />
+                </div>
+                <div className="col-span-6 ml-5">
+                  <h5>Significant Variables</h5>
+                  <div className="tabs">
+                    <a className="tab tab-bordered">Positive</a>
+                    <a className="tab tab-bordered tab-active">Negative</a>
+                  </div>
+                  <div className="tab-content">
+                    <Table />
+                  </div>
+                </div>
+              </section>
+            ) : (
+              <>
+              <section className="grid grid-cols-12 my-5">
+                <div className="col-span-6">
+                  <h5>Engagement Rate Analysis</h5>
+                </div>
+              </section>
+
+              <section className="grid grid-cols-12 my-5">
+                <div className="col-span-4">
+                  <div className="stat-title">No comments available.</div>  
+                </div>
+              </section>
+              </>
+            )
+        } 
       </Layout>
     );
   }

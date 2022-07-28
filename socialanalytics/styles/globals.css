@@ -24,3 +24,7 @@ a {
   border: 1px solid;
   text-align: center;
 }
+
+.table th:first-child {
+  z-index: auto;
+}
