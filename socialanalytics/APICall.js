@@ -3,17 +3,33 @@ const PATH = "https://bankindonesia-backend.herokuapp.com";
 export default class APICall {
     
     // Facebook
-    static getFacebookProfiles(){
-        return fetch(`${PATH}/api/facebook-profile/`, {
+    static getFacebookProfile(name){
+        return fetch(`${PATH}/api/facebook-profile/${name}`, {
             method: "GET"
         }).then((response) =>
             response.json()
         );
     }
 
+    static getFacebookPosts(name){
+        return fetch(`${PATH}/api/facebook/posts/${name}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getFacebookComments(name){
+        return fetch(`${PATH}/api/facebook/comments/${name}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
     // Instagram
-    static getInstagramProfiles(){
-        return fetch(`${PATH}/api/instagram-profiles/`, {
+    static getInstagramProfiles(account_id){
+        return fetch(`${PATH}/api/instagram-profiles/${account_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
@@ -21,8 +37,8 @@ export default class APICall {
     }
 
     // Twitter
-    static getTwitterProfiles(){
-        return fetch(`${PATH}/api/twitter-profiles/`, {
+    static getTwitterProfiles(user_id){
+        return fetch(`${PATH}/api/twitter-profiles/${user_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
@@ -30,8 +46,8 @@ export default class APICall {
     }
 
     // Youtube
-    static getYoutubeProfiles(){
-        return fetch(`${PATH}/api/youtube-channels/`, {
+    static getYoutubeProfiles(channel_id){
+        return fetch(`${PATH}/api/youtube-channels/${channel_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
