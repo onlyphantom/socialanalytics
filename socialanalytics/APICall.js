@@ -28,8 +28,24 @@ export default class APICall {
     }
 
     // Instagram
-    static getInstagramProfiles(account_id){
+    static getInstagramProfile(account_id){
         return fetch(`${PATH}/api/instagram-profiles/${account_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getInstagramPosts(account_id){
+        return fetch(`${PATH}/api/instagram/posts/${account_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getInstagramComments(account_id){
+        return fetch(`${PATH}/api/instagram/comments/${account_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
