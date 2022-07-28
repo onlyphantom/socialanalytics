@@ -53,8 +53,24 @@ export default class APICall {
     }
 
     // Twitter
-    static getTwitterProfiles(user_id){
+    static getTwitterProfile(user_id){
         return fetch(`${PATH}/api/twitter-profiles/${user_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getTwitterPosts(user_id){
+        return fetch(`${PATH}/api/twitter/tweets/${user_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getTwitterComments(user_id){
+        return fetch(`${PATH}/api/twitter/replies/${user_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
