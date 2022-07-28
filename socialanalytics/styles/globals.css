@@ -28,3 +28,11 @@ a {
 .table th:first-child {
   z-index: auto;
 }
+
+.loading {
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

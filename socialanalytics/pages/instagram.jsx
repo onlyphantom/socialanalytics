@@ -1,6 +1,6 @@
 import { startTransition, useEffect, useState } from "react";
 import Layout from "../components/Layout";
-
+import Image from "next/image";
 import Select from "react-select";
 
 import DatePicker from "react-datepicker";
@@ -13,8 +13,8 @@ registerLocale("id", id);
 import "react-datepicker/dist/react-datepicker.css";
 import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
-
 import Table from "../components/Table";
+import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
 import { InstagramProfiles } from "../data/InstagramProfiles";
@@ -190,11 +190,19 @@ const instagram = () => {
 
   if(loading){
     return(
-      <>
-        <Layout activePage="instagram">
-          Loading 
-        </Layout>
-      </>
+      <Layout activePage="instagram">
+        <section className="grid">
+          <div className="loading">
+            <Image
+              src="/bi-b.png"
+              alt="Bank Indonesia Logo"
+              width={220.1}
+              height={65}
+            />
+            <BarLoader width={200}/>
+          </div>
+        </section>
+      </Layout>
     )
   } else {
     return (
