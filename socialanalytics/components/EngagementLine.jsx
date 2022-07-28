@@ -126,6 +126,37 @@ const EngagementLine = ({ data, media }) => {
       ]
     };
     return <Line options={options} data={final_line} />;
+  } else if(media === "youtube"){
+    const final_line = {
+      labels,
+      datasets: [
+        {
+          label: "Total",
+          data: data.total,
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        },
+        {
+          label: "Likes",
+          data: data.like,
+          borderColor: "rgb(75, 192, 192)",
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
+        },
+        {
+          label: "Comments",
+          data: data.comment,
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: "rgba(53, 162, 235, 0.5)",
+        },
+        {
+          label: "Views",
+          data: data.view,
+          borderColor: "rgb(23, 122, 74)",
+          backgroundColor: "rgba(23, 122, 74, 0.5)",
+        },
+      ]
+    };
+    return <Line options={options} data={final_line} />;
   }
 };
 

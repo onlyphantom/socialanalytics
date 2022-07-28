@@ -78,8 +78,24 @@ export default class APICall {
     }
 
     // Youtube
-    static getYoutubeProfiles(channel_id){
+    static getYoutubeProfile(channel_id){
         return fetch(`${PATH}/api/youtube-channels/${channel_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getYoutubePosts(channel_id){
+        return fetch(`${PATH}/api/youtube/videos/${channel_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getYoutubeComments(channel_id){
+        return fetch(`${PATH}/api/youtube/comments/${channel_id}`, {
             method: "GET"
         }).then((response) => 
             response.json()
