@@ -20,7 +20,19 @@ a {
 }
 
 .react-datepicker-wrapper input {
-    background: inherit;
-    border: 1px solid;
-    text-align: center;
+  background: inherit;
+  border: 1px solid;
+  text-align: center;
+}
+
+.table th:first-child {
+  z-index: auto;
+}
+
+.loading {
+  min-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

@@ -10,12 +10,16 @@
   },
   "dependencies": {
     "chart.js": "^3.8.0",
+    "chartjs-adapter-moment": "^1.0.0",
     "daisyui": "^2.19.0",
+    "moment": "^2.29.4",
     "next": "12.2.2",
     "react": "18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-datepicker": "^4.8.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-select": "^5.4.0",
+    "react-spinners": "^0.13.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.7",

@@ -18,29 +18,30 @@ export const options = {
 
 const labels = ["Positive", "Neutral", "Negative"];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Comment Sentiment",
-      data: [22, 33, 12],
-      backgroundColor: [
-        "rgba(125, 255, 125, 0.2)",
-        "rgba(54, 162, 235, 0.2)",
-        "rgba(255, 99, 132, 0.2)",
-      ],
-      borderColor: [
-        "rgba(125, 255, 125, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(255, 99, 132, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+const DonutPercent = ({data}) => {
 
-const DonutPercent = () => {
-  return <Doughnut data={data} />;
+  const sentiment_count = data.sentiment_count;
+
+  return <Doughnut data= {{
+    labels,
+    datasets: [
+      {
+        label: "Comment Sentiment",
+        data: [sentiment_count.POSITIVE, sentiment_count.NEUTRAL, sentiment_count.NEGATIVE],
+        backgroundColor: [
+          "rgba(125, 255, 125, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+        ],
+        borderColor: [
+          "rgba(125, 255, 125, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 99, 132, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  }} />;
 };
 
 export default DonutPercent;

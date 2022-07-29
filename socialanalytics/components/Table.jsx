@@ -2,8 +2,8 @@ import React from "react";
 
 const Table = () => {
   return (
-    <div class="overflow-x-auto">
-      <table class="table table-zebra w-12">
+    <div className="overflow-x-auto">
+      <table className="table table-zebra w-12">
         <thead>
           <tr>
             <th>Engagement Type</th>
