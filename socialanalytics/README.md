@@ -5,7 +5,15 @@ This is a [Next.js](https://nextjs.org/) project that implements the front end o
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+```bash
+# npm
+npm install
+# or: yarn
+yarn install
+```
+
+Then, run the development server:
 
 ```bash
 yarn dev
