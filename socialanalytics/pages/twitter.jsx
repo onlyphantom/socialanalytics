@@ -18,6 +18,8 @@ import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
 import { TwitterProfiles } from "../data/TwitterProfiles";
+import { useLogin } from "../context/UserContext";
+import Router from "next/router";
 
 const customStyles = {
   input: (base) => ({
@@ -60,6 +62,8 @@ const formatNumber = n => {
 };
 
 const twitter = () => {
+  const { user } = useLogin();
+
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-3));
   const [endDate, setEndDate] = useState(new Date());
@@ -78,6 +82,12 @@ const twitter = () => {
     total : {},
     label : []
   });
+
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
 
   useEffect(() => {
     setLoading(true);

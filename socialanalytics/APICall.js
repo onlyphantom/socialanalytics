@@ -2,6 +2,22 @@ const PATH = "https://bankindonesia-backend.herokuapp.com";
 
 export default class APICall {
     
+    // Authentication
+    static loginUser(body) {
+        return fetch(`${PATH}/api/token/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }).then((response) => {
+          if (response.status !== 200) {
+            throw response;
+          }
+          return response.json();
+        });
+    }
+
     // Facebook
     static getFacebookProfile(name){
         return fetch(`${PATH}/api/facebook-profile/${name}`, {

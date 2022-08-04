@@ -6,7 +6,6 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { format } from "date-fns";
-
 import id from "date-fns/locale/id";
 registerLocale("id", id);
 
@@ -18,6 +17,8 @@ import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
 import { InstagramProfiles } from "../data/InstagramProfiles";
+import { useLogin } from "../context/UserContext";
+import Router from "next/router";
 
 const customStyles = {
   input: (base) => ({
@@ -60,6 +61,8 @@ const formatNumber = n => {
 };
 
 const instagram = () => {
+  const { user } = useLogin();
+
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-1));
   const [endDate, setEndDate] = useState(new Date());
@@ -77,6 +80,12 @@ const instagram = () => {
     total : {},
     label : []
   });
+
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
 
   useEffect(() => {
     setLoading(true);
@@ -101,6 +110,7 @@ const instagram = () => {
 
   }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading])
 
+  
   useEffect(() => {
     const sentiments = Array.isArray(comments) && comments.reduce(function(obj, v) {
       obj[v.sentimentlabel] = (obj[v.sentimentlabel] || 0) + 1;
