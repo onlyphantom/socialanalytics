@@ -31,50 +31,51 @@ export const options = {
     mode: "index",
     intersect: false,
   },
-  scales: {
-    x: {
-      stacked: true,
-    },
-    y: {
-      stacked: true,
-    },
-  },
+  // scales: {
+  //   x: {
+  //     stacked: true,
+  //   },
+  //   y: {
+  //     stacked: true,
+  //   },
+  // },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
+const SentimentBar = ({ data }) => {
+  const labels = ["POSITIVE", "NEUTRAL", "NEGATIVE"];
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: "Facebook",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      backgroundColor: "rgb(255, 99, 132)",
-      stack: "Stack 0",
-    },
-    {
-      label: "Instagram",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      backgroundColor: "rgb(75, 192, 192)",
-      stack: "Stack 0",
-    },
-    {
-      label: "Twitter",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      backgroundColor: "rgb(53, 162, 235)",
-      stack: "Stack 1",
-    },
-    {
-      label: "YouTube",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      backgroundColor: "rgb(23, 122, 74)",
-      stack: "Stack 1",
-    },
-  ],
-};
+  const sentimentData = {
+    labels,
+    datasets: [
+      {
+        label: "Facebook",
+        data: data.facebook,
+        backgroundColor: "rgb(255, 99, 132)",
+        // stack: "Stack 0",
+      },
+      {
+        label: "Instagram",
+        data: data.instagram,
+        backgroundColor: "rgb(75, 192, 192)",
+        // stack: "Stack 0",
+      },
+      {
+        label: "Twitter",
+        data: data.twitter,
+        backgroundColor: "rgb(53, 162, 235)",
+        // stack: "Stack 1",
+      },
+      {
+        label: "YouTube",
+        data: data.youtube,
+        backgroundColor: "rgb(23, 122, 74)",
+        // stack: "Stack 1",
+      },
+    ],
+  };
 
-const SentimentBar = () => {
-  return <Bar options={options} data={data} />;
+
+  return <Bar options={options} data={sentimentData} />;
 };
 
 export default SentimentBar;

@@ -51,6 +51,22 @@ export default class APICall {
         );
     }
 
+    static getFacebookSentimentOverview(type){
+        return fetch(`${PATH}/api/facebook/sentiment-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getFacebookEngagementOverview(type){
+        return fetch(`${PATH}/api/facebook/engagement-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
     // Instagram
     static getInstagramProfile(account_id){
         return fetch(`${PATH}/api/instagram-profiles/${account_id}`, {
@@ -78,6 +94,22 @@ export default class APICall {
 
     static getInstagramEngagements(){
         return fetch(`${PATH}/api/instagram-engagement/`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getInstagramSentimentOverview(type){
+        return fetch(`${PATH}/api/instagram/sentiment-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getInstagramEngagementOverview(type){
+        return fetch(`${PATH}/api/instagram/engagement-overview/${type}`, {
             method: "GET"
         }).then((response) => 
             response.json()
@@ -117,6 +149,22 @@ export default class APICall {
         );
     }
 
+    static getTwitterSentimentOverview(type){
+        return fetch(`${PATH}/api/twitter/sentiment-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getTwitterEngagementOverview(type){
+        return fetch(`${PATH}/api/twitter/engagement-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
     // Youtube
     static getYoutubeProfile(channel_id){
         return fetch(`${PATH}/api/youtube-channels/${channel_id}`, {
@@ -144,6 +192,22 @@ export default class APICall {
 
     static getYoutubeEngagements(){
         return fetch(`${PATH}/api/youtube-engagement/`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getYoutubeSentimentOverview(type){
+        return fetch(`${PATH}/api/youtube/sentiment-overview/${type}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getYoutubeEngagementOverview(type){
+        return fetch(`${PATH}/api/youtube/engagement-overview/${type}`, {
             method: "GET"
         }).then((response) => 
             response.json()
