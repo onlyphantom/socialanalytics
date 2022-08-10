@@ -82,6 +82,8 @@ const youtube = () => {
     total : {},
     label : []
   });
+  const [activeTab, setActiveTab] = useState("positive");
+  const [tableData, setTableData] = useState();
 
   useEffect(() => {
     if(!user){
@@ -89,6 +91,13 @@ const youtube = () => {
     }
   }, [user])
   
+  // useEffect(() => {
+  //   APICall.getYoutubeEngagements()
+  //     .then((response) => {
+  //       setTableData(response);
+  //     })
+  // }, [setTableData])
+
   useEffect(() => {
     setLoading(true);
 
@@ -99,14 +108,14 @@ const youtube = () => {
 
     APICall.getYoutubePosts(selectedProfile.value)
       .then((response) => {
-        let result = response.filter((response) => new Date(response.publishedat) >= startDate && new Date(response.publishedat) <= endDate);
+        let result = Array.isArray(response) && response.filter((response) => new Date(response.publishedat) >= startDate && new Date(response.publishedat) <= endDate);
         result = Array.isArray(result) && result.sort((a,b) => new Date(a.publishedat) - new Date(b.publishedat));
         setPosts(result);
       })
 
     APICall.getYoutubeComments(selectedProfile.value)
       .then((response) => {
-        setComments(response.filter((response) => new Date(response.publishedat) >= startDate && new Date(response.publishedat) <= endDate));
+        setComments(Array.isArray(response) && response.filter((response) => new Date(response.publishedat) >= startDate && new Date(response.publishedat) <= endDate));
         setLoading(false);
       })
 
@@ -282,15 +291,15 @@ const youtube = () => {
                   className="inline-block w-8 h-8 stroke-current"
                 >
                   <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
                     d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
                   />
                   <path 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round" 
-                    stroke-width="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
                     d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
@@ -408,11 +417,11 @@ const youtube = () => {
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
                   <div className="tabs">
-                    <a className="tab tab-bordered">Positive</a>
-                    <a className="tab tab-bordered tab-active">Negative</a>
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    <Table />
+                    {/* <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/> */}
                   </div>
                 </div>
               </section>

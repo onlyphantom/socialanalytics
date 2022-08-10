@@ -82,12 +82,21 @@ const twitter = () => {
     total : {},
     label : []
   });
+  const [activeTab, setActiveTab] = useState("positive");
+  const [tableData, setTableData] = useState();
 
   useEffect(() => {
     if(!user){
       Router.push("/login");
     }
   }, [user])
+
+  // useEffect(() => {
+  //   APICall.getTwitterEngagements()
+  //     .then((response) => {
+  //       setTableData(response);
+  //     })
+  // }, [setTableData])
 
   useEffect(() => {
     setLoading(true);
@@ -99,14 +108,14 @@ const twitter = () => {
 
     APICall.getTwitterPosts(selectedProfile.value)
       .then((response) => {
-        let result = response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
+        let result = Array.isArray(response) && response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
         result = Array.isArray(result) && result.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
         setPosts(result);
       })
 
     APICall.getTwitterComments(selectedProfile.value)
       .then((response) => {
-        setComments(response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate));
+        setComments(Array.isArray(response) && response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate));
         setLoading(false);
       })
 
@@ -402,11 +411,11 @@ const twitter = () => {
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
                   <div className="tabs">
-                    <a className="tab tab-bordered">Positive</a>
-                    <a className="tab tab-bordered tab-active">Negative</a>
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    <Table />
+                    {/* <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/> */}
                   </div>
                 </div>
               </section>

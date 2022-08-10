@@ -33,7 +33,6 @@ const LoginPage = () => {
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    console.log(loginInfo)
     APICall.loginUser(loginInfo)
       .then((response) => {
         setAuthTokens(response);

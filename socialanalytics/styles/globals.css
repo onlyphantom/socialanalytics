@@ -29,6 +29,32 @@ a {
   z-index: auto;
 }
 
+.tableFooter {
+  padding: 8px 0px;
+  font-weight: 500;
+  text-align: left;
+  font-size: 13px;
+}
+
+.tableButton {
+  border: none;
+  padding: 5px 10px;
+  //border-radius: 10px;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.tableActiveButton {
+  color: inherit;
+  //background: #185adb;
+  cursor: pointer;
+}
+
+.tableInactiveButton {
+  color: #6d7580;
+  //background: #f9f9f9;
+}
+
 .loading {
   min-height: 95vh;
   display: flex;

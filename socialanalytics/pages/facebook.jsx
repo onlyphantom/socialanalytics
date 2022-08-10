@@ -82,6 +82,8 @@ const facebook = () => {
     total : {},
     label : []
   });
+  const [activeTab, setActiveTab] = useState("positive");
+  const [tableData, setTableData] = useState();
 
   useEffect(() => {
     if(!user){
@@ -89,6 +91,13 @@ const facebook = () => {
     }
   }, [user])
 
+  // useEffect(() => {
+  //   APICall.getFacebookEngagements()
+  //     .then((response) => {
+  //       setTableData(response);
+  //     })
+  // }, [setTableData])
+  
   useEffect(() => {
     setLoading(true);
 
@@ -99,18 +108,18 @@ const facebook = () => {
 
     APICall.getFacebookPosts(selectedProfile.value)
       .then((response) => {
-        let result = response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
+        let result = Array.isArray(response) && response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
         result = Array.isArray(result) && result.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
         setPosts(result);
       })
 
     APICall.getFacebookComments(selectedProfile.value)
       .then((response) => {
-        setComments(response.filter((response) => new Date(response.comment_time) >= startDate && new Date(response.comment_time) <= endDate));
+        setComments(Array.isArray(response) && response.filter((response) => new Date(response.comment_time) >= startDate && new Date(response.comment_time) <= endDate));
         setLoading(false);
       })
 
-  }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading])
+  }, [selectedProfile, startDate, endDate, setTableData, setProfile, setPosts, setComments, setLoading])
 
   useEffect(() => {
     const sentiments = Array.isArray(comments) && comments.reduce(function(obj, v) {
@@ -396,18 +405,18 @@ const facebook = () => {
         {
             Array.isArray(posts) && posts.length > 0 ? (
               <section className="grid grid-cols-12 my-5">
-                <div className="col-span-6">
+                <div className="col-span-6 mr-5">
                   <h5>Engagement Rate Analysis</h5>
                   <EngagementLine data={lineData} media="facebook"/>
                 </div>
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
                   <div className="tabs">
-                    <a className="tab tab-bordered">Positive</a>
-                    <a className="tab tab-bordered tab-active">Negative</a>
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    <Table />
+                    {/* <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/> */}
                   </div>
                 </div>
               </section>

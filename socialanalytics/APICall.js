@@ -43,6 +43,14 @@ export default class APICall {
         );
     }
 
+    static getFacebookEngagements(){
+        return fetch(`${PATH}/api/facebook-engagement/`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
     // Instagram
     static getInstagramProfile(account_id){
         return fetch(`${PATH}/api/instagram-profiles/${account_id}`, {
@@ -62,6 +70,14 @@ export default class APICall {
 
     static getInstagramComments(account_id){
         return fetch(`${PATH}/api/instagram/comments/${account_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getInstagramEngagements(){
+        return fetch(`${PATH}/api/instagram-engagement/`, {
             method: "GET"
         }).then((response) => 
             response.json()
@@ -93,6 +109,14 @@ export default class APICall {
         );
     }
 
+    static getTwitterEngagements(){
+        return fetch(`${PATH}/api/twitter-engagement/`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
     // Youtube
     static getYoutubeProfile(channel_id){
         return fetch(`${PATH}/api/youtube-channels/${channel_id}`, {
@@ -112,6 +136,14 @@ export default class APICall {
 
     static getYoutubeComments(channel_id){
         return fetch(`${PATH}/api/youtube/comments/${channel_id}`, {
+            method: "GET"
+        }).then((response) => 
+            response.json()
+        );
+    }
+
+    static getYoutubeEngagements(){
+        return fetch(`${PATH}/api/youtube-engagement/`, {
             method: "GET"
         }).then((response) => 
             response.json()
