@@ -157,6 +157,37 @@ const EngagementLine = ({ data, media }) => {
       ]
     };
     return <Line options={options} data={final_line} />;
+  } else {
+    const final_line = {
+      labels,
+      datasets: [
+        {
+          label: "Facebook",
+          data: data.facebook,
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        },
+        {
+          label: "Instagram",
+          data: data.instagram,
+          borderColor: "rgb(75, 192, 192)",
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
+        },
+        {
+          label: "Twitter",
+          data: data.twitter,
+          borderColor: "rgb(53, 162, 235)",
+          backgroundColor: "rgba(53, 162, 235, 0.5)",
+        },
+        {
+          label: "Youtube",
+          data: data.youtube,
+          borderColor: "rgb(23, 122, 74)",
+          backgroundColor: "rgba(23, 122, 74, 0.5)",
+        },
+      ]
+    };
+    return <Line options={options} data={final_line} />;
   }
 };
 

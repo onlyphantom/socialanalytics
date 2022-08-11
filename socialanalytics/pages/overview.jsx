@@ -1,99 +1,280 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EngagementLine from "../components/EngagementLine";
 import Layout from "../components/Layout";
 import SentimentBar from "../components/SentimentBar";
+import Image from "next/image";
+import { BarLoader } from "react-spinners";
+import Select from "react-select";
+import { useLogin } from "../context/UserContext";
 
-import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { TypeOptions } from "../data/TypeOptions";
+import APICall from "../APICall";
+import Router from "next/router";
 
-import id from "date-fns/locale/id";
-registerLocale("id", id);
-
-import faker from "faker";
-
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Facebook",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Instagram",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(75, 192, 192)",
-      backgroundColor: "rgba(75, 192, 192, 0.5)",
-    },
-    {
-      label: "Twitter",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-    {
-      label: "YouTube",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(23, 122, 74)",
-      backgroundColor: "rgba(23, 122, 74, 0.5)",
-    },
-  ],
+const customStyles = {
+  input: (base) => ({
+    ...base,
+    color: "inherit"
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: state.isFocused ? "white": "black",
+    backgroundColor: state.isFocused ? "#216ba5" : "white"
+  }),
+  control: (base, state) => ({
+    ...base,
+    background: "inherit",
+    borderColor: state.isFocused ? "white" : "white",
+    borderRadius: state.isFocused ? 0 : 0,
+    boxShadow: state.isFocused ? null : null,
+    "&:hover": {
+      color: "white"
+    }
+  }),
+  singleValue: (base) => ({
+    ...base,
+    color: "inherit"
+  }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    "&:hover": {
+      color: "white"
+    }
+  })
 };
 
 const overview = () => {
+  const { user } = useLogin();
 
-  const [startDate, setStartDate] = useState(new Date("2022/01/01"));
-  const [endDate, setEndDate] = useState(new Date("2022/01/14"));
+  const [loading, setLoading] = useState(true);
+  const [type, setType] = useState(TypeOptions[0]);
+  const [sentimentFacebook, setSentimentFacebook] = useState();
+  const [sentimentInstagram, setSentimentInstagram] = useState();
+  const [sentimentTwitter, setSentimentTwitter] = useState();
+  const [sentimentYoutube, setSentimentYoutube] = useState();
+  const [engagementFacebook, setEngagementFacebook] = useState();
+  const [engagementInstagram, setEngagementInstagram] = useState();
+  const [engagementTwitter, setEngagementTwitter] = useState();
+  const [engagementYoutube, setEngagementYoutube] = useState();
+  const [engagementData, setEngagementData] = useState({
+    facebook: [],
+    instagram: [],
+    twitter: [],
+    youtube: [],
+    label: []
+  })
 
-  return (
-    <Layout activePage="overview">
-      <section className="grid grid-cols-12">
-        <div className="col-start-8 col-span-4 flex gap-x-2 max-w-xs">
-          {/* https://github.com/Hacker0x01/react-datepicker */}
-          <DatePicker
-            dateFormat="dd/MM/yyyy"
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            selectsStart
-            startDate={startDate}
-            endDate={endDate}
-            locale="id"
-            showMonthDropdown
-            className="col-span-1 max-w-xxs"
-          />
-          <DatePicker
-            dateFormat="dd/MM/yyyy"
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            selectsEnd
-            startDate={startDate}
-            endDate={endDate}
-            minDate={startDate}
-            locale="id"
-            showMonthDropdown
-            className="col-span-1 max-w-xxs"
-          />
-        </div>
-      </section>
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
 
-      <h3>Sentiment Analysis</h3>
-      <section className="grid grid-cols-12 my-4">
-        <div className="col-start-2 col-span-9">
-          <SentimentBar />
-        </div>
-      </section>
+  useEffect(() => {
+    setLoading(true);
 
-      <h3>Total Engagement Rate</h3>
-      <section className="grid grid-cols-12 my-4">
-        <div className="col-start-2 col-span-9">
-          <EngagementLine data={data} />
-        </div>
-      </section>
-    </Layout>
-  );
+    APICall.getFacebookSentimentOverview(type.value)
+      .then((response) => {
+        const unavailable_sentiment = ["POSITIVE", "NEUTRAL", "NEGATIVE"].filter(sentiment => !Object.keys(response).includes(sentiment));
+        Array.isArray(unavailable_sentiment) && unavailable_sentiment.map(sentiment => {
+          if(response){
+            response[sentiment] = 0;
+          }
+        });
+        setSentimentFacebook(response);
+      });
+
+    APICall.getInstagramSentimentOverview(type.value)
+      .then((response) => {
+        const unavailable_sentiment = ["POSITIVE", "NEUTRAL", "NEGATIVE"].filter(sentiment => !Object.keys(response).includes(sentiment));
+        Array.isArray(unavailable_sentiment) && unavailable_sentiment.map(sentiment => {
+          if(response){
+            response[sentiment] = 0;
+          }
+        });
+        setSentimentInstagram(response);
+      });
+
+    APICall.getTwitterSentimentOverview(type.value)
+      .then((response) => {
+        const unavailable_sentiment = ["POSITIVE", "NEUTRAL", "NEGATIVE"].filter(sentiment => !Object.keys(response).includes(sentiment));
+        Array.isArray(unavailable_sentiment) && unavailable_sentiment.map(sentiment => {
+          if(response){
+            response[sentiment] = 0;
+          }
+        });
+        setSentimentTwitter(response);
+      });
+
+    APICall.getYoutubeSentimentOverview(type.value)
+      .then((response) => {
+        const unavailable_sentiment = ["POSITIVE", "NEUTRAL", "NEGATIVE"].filter(sentiment => !Object.keys(response).includes(sentiment));
+        Array.isArray(unavailable_sentiment) && unavailable_sentiment.map(sentiment => {
+          if(response){
+            response[sentiment] = 0;
+          }
+        });
+        setSentimentYoutube(response);
+      });
+
+    APICall.getFacebookEngagementOverview(type.value)
+      .then((response) => {
+        let result = Array.isArray(response) && response.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+        setEngagementFacebook(result);
+      })
+
+    APICall.getInstagramEngagementOverview(type.value)
+      .then((response) => {
+        let result = Array.isArray(response) && response.sort((a,b) => new Date(a.taken_at) - new Date(b.taken_at));
+        setEngagementInstagram(result);
+        setLoading(false);
+      })
+    
+    APICall.getTwitterEngagementOverview(type.value)
+      .then((response) => {
+        let result = Array.isArray(response) && response.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
+        setEngagementTwitter(result);
+      })
+    
+    APICall.getYoutubeEngagementOverview(type.value)
+      .then((response) => {
+        let result = Array.isArray(response) && response.sort((a,b) => new Date(a.publishedat) - new Date(b.publishedat));
+        setEngagementYoutube(result);
+      })
+
+  }, [type])
+
+  useEffect(() => {
+
+    const facebook = Array.isArray(engagementFacebook)  && engagementFacebook.reduce((obj,v) => {
+      let date = new Date(v.created_at);
+      date = date.toDateString();
+      let index = obj.findIndex(item => item.x === date);
+      if(index !== -1){
+        obj[index]["y"] = obj[index]["y"] + v.engagement;
+      } else{
+        let object = {};
+        object["x"] =  date;
+        object["y"] = v.engagement;
+        obj.push(object);
+      }
+      return obj;
+    }, []);
+
+    const instagram = Array.isArray(engagementInstagram)  && engagementInstagram.reduce((obj,v) => {
+      let date = new Date(v.taken_at);
+      date = date.toDateString();
+      let index = obj.findIndex(item => item.x === date);
+      if(index !== -1){
+        obj[index]["y"] = obj[index]["y"] + v.engagement;
+      } else{
+        let object = {};
+        object["x"] =  date;
+        object["y"] = v.engagement;
+        obj.push(object);
+      }
+      return obj;
+    }, []);
+
+    const twitter = Array.isArray(engagementTwitter)  && engagementTwitter.reduce((obj,v) => {
+      let date = new Date(v.created_at);
+      date = date.toDateString();
+      let index = obj.findIndex(item => item.x === date);
+      if(index !== -1){
+        obj[index]["y"] = obj[index]["y"] + v.engagement;
+      } else{
+        let object = {};
+        object["x"] =  date;
+        object["y"] = v.engagement;
+        obj.push(object);
+      }
+      return obj;
+    }, []);
+
+    const youtube = Array.isArray(engagementYoutube)  && engagementYoutube.reduce((obj,v) => {
+      let date = new Date(v.publishedat);
+      date = date.toDateString();
+      let index = obj.findIndex(item => item.x === date);
+      if(index !== -1){
+        obj[index]["y"] = obj[index]["y"] + v.engagement;
+      } else{
+        let object = {};
+        object["x"] =  date;
+        object["y"] = v.engagement;
+        obj.push(object);
+      }
+      return obj;
+    }, []);
+
+    const combinedEngagement = Array.isArray(facebook) && facebook.concat(instagram, twitter, youtube)
+
+    const label = Array.isArray(combinedEngagement) && Array.from(new Set(combinedEngagement.map(item => item.x)));
+
+    setEngagementData({
+      facebook: facebook,
+      instagram: instagram,
+      twitter: twitter,
+      youtube: youtube,
+      label: label
+    })
+
+  }, [engagementFacebook, engagementInstagram, engagementTwitter, engagementYoutube])
+
+  if(loading){
+    return(
+      <Layout activePage="overview">
+        <section className="grid">
+          <div className="loading">
+            <Image
+              src="/bi-b.png"
+              alt="Bank Indonesia Logo"
+              width={220.1}
+              height={65}
+            />
+            <BarLoader width={200}/>
+          </div>
+        </section>
+      </Layout>
+    )
+  } else {
+    return (
+      <Layout activePage="overview">
+        <section className="grid grid-cols-12">
+            <div className="col-start-10 col-span-2">
+              <Select 
+                  options={TypeOptions}
+                  value={type}
+                  defaultValue={type}
+                  onChange={(selected) => {
+                    setType(selected)
+                  }}
+                  placeholder="Select a profile.."
+                  styles={customStyles}
+              />
+            </div>
+          </section>
+
+        <h3>Sentiment Analysis</h3>
+        <section className="grid grid-cols-12 my-4">
+          <div className="col-start-2 col-span-9">
+            <SentimentBar data={{
+              facebook: sentimentFacebook,
+              instagram: sentimentInstagram,
+              twitter: sentimentTwitter,
+              youtube: sentimentYoutube 
+            }}/>
+          </div>
+        </section>
+
+        <h3>Total Engagement Rate</h3>
+        <section className="grid grid-cols-12 my-4">
+          <div className="col-start-2 col-span-9">
+            <EngagementLine data={engagementData} media={"overview"}/>
+          </div>
+        </section>
+      </Layout>
+    )
+  };
 };
 
 export default overview;

@@ -18,6 +18,8 @@ import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
 import { FacebookProfiles } from "../data/FacebookProfiles";
+import { useLogin } from "../context/UserContext";
+import Router from "next/router";
 
 const customStyles = {
   input: (base) => ({
@@ -60,6 +62,8 @@ const formatNumber = n => {
 };
 
 const facebook = () => {
+  const { user } = useLogin();
+
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-3));
   const [endDate, setEndDate] = useState(new Date());
@@ -78,7 +82,22 @@ const facebook = () => {
     total : {},
     label : []
   });
+  const [activeTab, setActiveTab] = useState("positive");
+  const [tableData, setTableData] = useState();
 
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
+
+  useEffect(() => {
+    APICall.getFacebookEngagements()
+      .then((response) => {
+        setTableData(response)
+      })
+  }, []);
+  
   useEffect(() => {
     setLoading(true);
 
@@ -89,18 +108,18 @@ const facebook = () => {
 
     APICall.getFacebookPosts(selectedProfile.value)
       .then((response) => {
-        let result = response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
+        let result = Array.isArray(response) && response.filter((response) => new Date(response.created_at) >= startDate && new Date(response.created_at) <= endDate);
         result = Array.isArray(result) && result.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
         setPosts(result);
       })
 
     APICall.getFacebookComments(selectedProfile.value)
       .then((response) => {
-        setComments(response.filter((response) => new Date(response.comment_time) >= startDate && new Date(response.comment_time) <= endDate));
+        setComments(Array.isArray(response) && response.filter((response) => new Date(response.comment_time) >= startDate && new Date(response.comment_time) <= endDate));
         setLoading(false);
       })
 
-  }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading])
+  }, [selectedProfile, startDate, endDate, setTableData, setProfile, setPosts, setComments, setLoading])
 
   useEffect(() => {
     const sentiments = Array.isArray(comments) && comments.reduce(function(obj, v) {
@@ -255,7 +274,7 @@ const facebook = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   ></path>
                 </svg>
               </div>
@@ -276,7 +295,7 @@ const facebook = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   ></path>
                 </svg>
               </div>
@@ -297,7 +316,7 @@ const facebook = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
                   ></path>
                 </svg>
               </div>
@@ -386,18 +405,18 @@ const facebook = () => {
         {
             Array.isArray(posts) && posts.length > 0 ? (
               <section className="grid grid-cols-12 my-5">
-                <div className="col-span-6">
+                <div className="col-span-6 mr-5">
                   <h5>Engagement Rate Analysis</h5>
                   <EngagementLine data={lineData} media="facebook"/>
                 </div>
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
                   <div className="tabs">
-                    <a className="tab tab-bordered">Positive</a>
-                    <a className="tab tab-bordered tab-active">Negative</a>
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    <Table />
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
                   </div>
                 </div>
               </section>
@@ -406,12 +425,17 @@ const facebook = () => {
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
+                  <div className="stat-title my-5">No posts available.</div>  
                 </div>
-              </section>
-
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-4">
-                  <div className="stat-title">No posts available.</div>  
+                <div className="col-span-6 ml-5">
+                  <h5>Significant Variables</h5>
+                  <div className="tabs">
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
+                  </div>
+                  <div className="tab-content">
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
+                  </div>
                 </div>
               </section>
               </>

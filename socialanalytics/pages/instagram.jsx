@@ -6,7 +6,6 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import { registerLocale, setDefaultLocale } from "react-datepicker";
 import { format } from "date-fns";
-
 import id from "date-fns/locale/id";
 registerLocale("id", id);
 
@@ -18,6 +17,8 @@ import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
 import { InstagramProfiles } from "../data/InstagramProfiles";
+import { useLogin } from "../context/UserContext";
+import Router from "next/router";
 
 const customStyles = {
   input: (base) => ({
@@ -60,6 +61,8 @@ const formatNumber = n => {
 };
 
 const instagram = () => {
+  const { user } = useLogin();
+
   const [loading, setLoading] = useState(true);
   const [startDate, setStartDate] = useState(new Date().setMonth(new Date().getMonth()-1));
   const [endDate, setEndDate] = useState(new Date());
@@ -77,6 +80,21 @@ const instagram = () => {
     total : {},
     label : []
   });
+  const [activeTab, setActiveTab] = useState("positive");
+  const [tableData, setTableData] = useState();
+
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
+
+  useEffect(() => {
+    APICall.getInstagramEngagements()
+      .then((response) => {
+        setTableData(response);
+      })
+  }, [])
 
   useEffect(() => {
     setLoading(true);
@@ -88,19 +106,20 @@ const instagram = () => {
 
     APICall.getInstagramPosts(selectedProfile.value)
       .then((response) => {
-        let result = response.filter((response) => new Date(response.taken_at) >= startDate && new Date(response.taken_at) <= endDate);
+        let result = Array.isArray(response) && response.filter((response) => new Date(response.taken_at) >= startDate && new Date(response.taken_at) <= endDate);
         result = Array.isArray(result) && result.sort((a,b) => new Date(a.taken_at) - new Date(b.taken_at));
         setPosts(result);
       })
 
     APICall.getInstagramComments(selectedProfile.value)
       .then((response) => {
-        setComments(response.filter((response) => new Date(response.created_at_utc) >= startDate && new Date(response.created_at_utc) <= endDate));
+        setComments(Array.isArray(response) && response.filter((response) => new Date(response.created_at_utc) >= startDate && new Date(response.created_at_utc) <= endDate));
         setLoading(false);
       })
 
   }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading])
 
+  
   useEffect(() => {
     const sentiments = Array.isArray(comments) && comments.reduce(function(obj, v) {
       obj[v.sentimentlabel] = (obj[v.sentimentlabel] || 0) + 1;
@@ -237,7 +256,7 @@ const instagram = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   ></path>
                 </svg>
               </div>
@@ -258,7 +277,7 @@ const instagram = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   ></path>
                 </svg>
               </div>
@@ -279,7 +298,7 @@ const instagram = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                   ></path>
                 </svg>
               </div>
@@ -375,11 +394,11 @@ const instagram = () => {
                 <div className="col-span-6 ml-5">
                   <h5>Significant Variables</h5>
                   <div className="tabs">
-                    <a className="tab tab-bordered">Positive</a>
-                    <a className="tab tab-bordered tab-active">Negative</a>
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    <Table />
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
                   </div>
                 </div>
               </section>
@@ -388,12 +407,17 @@ const instagram = () => {
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
+                  <div className="stat-title my-5">No posts available.</div>  
                 </div>
-              </section>
-
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-4">
-                  <div className="stat-title">No posts available.</div>  
+                <div className="col-span-6 ml-5">
+                  <h5>Significant Variables</h5>
+                  <div className="tabs">
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
+                  </div>
+                  <div className="tab-content">
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
+                  </div>
                 </div>
               </section>
               </>
