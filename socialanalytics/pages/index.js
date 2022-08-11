@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css'
 import { useLogin } from '../context/UserContext';
 import Router from 'next/router';
 import { useEffect } from 'react';
+import Layout from '../components/Layout';
 
 export default function Home() {
   const { user } = useLogin();
@@ -17,8 +18,9 @@ export default function Home() {
       }
     }
   }, [user])
-  
-    return (
+
+  return (
+    <Layout>
       <div className="drawer drawer-mobile">
         <input id="side-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
@@ -47,52 +49,8 @@ export default function Home() {
               </a>
             </footer>
           </main>
-        </div>{/* <!-- End of drawer --> */}
-        <div className="drawer-side">
-          <label htmlFor="side-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-            <Link href="/">
-              <a>
-                <span className={styles.logo}>
-                  <Image
-                    src="/bi-b.png"
-                    alt="Bank Indonesia Logo"
-                    className="grayscale brightness-200"
-                    width={220.1}
-                    height={69.7}
-                  />
-                </span>
-              </a>
-            </Link>
-
-            <li>
-              <Link href="/overview">
-                <a>Overview</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/facebook">
-                <a>Facebook</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/instagram">
-                <a>Instagram</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/twitter">
-                <a>Twitter</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/youtube">
-                <a>YouTube</a>
-              </Link>
-            </li>
-          </ul>
         </div>
-
       </div>
-    )
+    </Layout>
+  )
 }

@@ -2,9 +2,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useLogin } from "../context/UserContext";
 import styles from "../styles/Home.module.css";
+import Router from "next/router";
 
 const Layout = ({ children, activePage }) => {
+  const { logoutUser } = useLogin();
+
   return (
     <div className="drawer drawer-mobile">
       <input id="side-drawer" type="checkbox" className="drawer-toggle" />
@@ -38,28 +42,9 @@ const Layout = ({ children, activePage }) => {
               </svg>
             </label>
             <div className="flex flex-col mt-6">
-              {/* <h1 className="text-xl font-bold">{activePage.toUpperCase()}</h1> */}
               {children}
             </div>
           </div>
-          {/* <footer className={styles.footer}> */}
-          {/* <footer>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Powered by{" "}
-              <span className={styles.logo}>
-                <Image
-                  src="/logo_wide.svg"
-                  alt="Supertype"
-                  width={162}
-                  height={74.6}
-                />
-              </span>
-            </a>
-          </footer> */}
         </main>
       </div>
       {/* <!-- End of drawer --> */}
@@ -103,6 +88,27 @@ const Layout = ({ children, activePage }) => {
             <Link href="/youtube">
               <a>YouTube</a>
             </Link>
+          </li>
+          <li className="absolute bottom-3">
+            <button onClick={() => {
+              logoutUser();
+              setTimeout(() => Router.push("/login"), 2000);
+            }}>
+              <svg 
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="inline-block w-6 h-6 stroke-current"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth="2" 
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              <a>Logout</a>
+            </button>
           </li>
         </ul>
       </div>

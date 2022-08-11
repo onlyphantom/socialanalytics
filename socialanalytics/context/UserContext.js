@@ -13,7 +13,7 @@ export function UserProvider({ children }) {
     const logoutUser = () => {
         setAuthTokens(null);
         setUser(null);
-        window.localStorage.clear();
+        window.localStorage.removeItem("BIAuthTokens");
     };
     
     useEffect(() => {
