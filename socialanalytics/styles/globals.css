@@ -46,13 +46,11 @@ a {
 
 .tableActiveButton {
   color: inherit;
-  //background: #185adb;
   cursor: pointer;
 }
 
 .tableInactiveButton {
   color: #6d7580;
-  //background: #f9f9f9;
 }
 
 .loading {
@@ -94,6 +92,7 @@ a {
   border-radius: 10px;
   border: 2px solid rgb(59 130 246);
 }
+
 #login-form {
   flex: 1 0 100%;
   max-width: 480px;
@@ -101,9 +100,11 @@ a {
   padding: 60px;
   text-align: center;
 }
+
 #login-form p {
   color: white;
 }
+
 #login-form p.form-title {
   color: white;
   font-family: "Josefin Sans", sans-serif;
@@ -112,25 +113,12 @@ a {
   line-height: 1;
   margin-bottom: 20px;
 }
+
 #login-form small {
   font-size: 14px;
 }
-#login-form .ant-form-item-label > label.ant-form-item-required::before {
-  display: none;
-}
-.ant-form-item-control-input-content {
-  text-align: left;
-}
-#login-form .ant-input-affix-wrapper {
-  padding: 12px 15px;
-}
-#login-form .ant-btn {
-  height: 42px;
-  letter-spacing: 1px;
-  margin-left: 0;
-}
+
 .login-form-button {
-  /* margin-top: 12px; */
   width: 100%;
 }
 
@@ -143,9 +131,11 @@ a {
     max-width: 100%;
   }
 }
+
 ::-ms-reveal {
   filter: invert(100%);
 }
+
 .bi-logo {
   max-width: 10em;
   padding-bottom: 1em;

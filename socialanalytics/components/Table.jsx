@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 const calculateRange = (data, rowsPerPage) => {
   const range = [];
   const num = Math.ceil(data.length / rowsPerPage);
-  let i = 1;
   for (let i = 1; i <= num; i++) {
     range.push(i);
   }
@@ -30,7 +29,7 @@ const Table = ({ data, activeTab, rowsPerPage }) => {
 
   return (
     <>
-    {tableRange.length > 0 ? (
+    { tableRange.length > 0 ? (
       <div className="overflow-x-auto">
         <table className="table table-zebra w-12">
           <thead>
@@ -70,8 +69,10 @@ const Table = ({ data, activeTab, rowsPerPage }) => {
         </div>
       </div>
     ) : (
-      <div className="stat-title my-3">No data available.</div>  
-    )}
+      <div className="stat-title my-3">
+        No data available.
+      </div>  
+    ) }
     </>
   );
 }

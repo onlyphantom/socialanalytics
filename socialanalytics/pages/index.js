@@ -1,22 +1,25 @@
+import { useEffect } from 'react';
+
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import Router from 'next/router';
 
 import { useLogin } from '../context/UserContext';
-import Router from 'next/router';
-import { useEffect } from 'react';
+import Layout from '../components/Layout';
+import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const { user } = useLogin();
   
   useEffect(() => {
     if(!user){
-      Router.push("/login");
+      if(!localStorage.getItem("BIAuthTokens")){
+        Router.push("/login");
+      }
     }
-  }, [user])
-  
-    return (
+  }, [user]);
+
+  return (
+    <Layout>
       <div className="drawer drawer-mobile">
         <input id="side-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col items-center justify-center">
@@ -29,7 +32,6 @@ export default function Home() {
 
           <main>
             <div>
-              {/* <!-- Page content here --> */}
               <h1 className={styles.title}>
                 Social Media Analytics
               </h1>
@@ -45,52 +47,9 @@ export default function Home() {
               </a>
             </footer>
           </main>
-        </div>{/* <!-- End of drawer --> */}
-        <div className="drawer-side">
-          <label htmlFor="side-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-            <Link href="/">
-              <a>
-                <span className={styles.logo}>
-                  <Image
-                    src="/bi-b.png"
-                    alt="Bank Indonesia Logo"
-                    className="grayscale brightness-200"
-                    width={220.1}
-                    height={69.7}
-                  />
-                </span>
-              </a>
-            </Link>
 
-            <li>
-              <Link href="/overview">
-                <a>Overview</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/facebook">
-                <a>Facebook</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/instagram">
-                <a>Instagram</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/twitter">
-                <a>Twitter</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/youtube">
-                <a>YouTube</a>
-              </Link>
-            </li>
-          </ul>
         </div>
-
       </div>
-    )
-}
+    </Layout>
+  );
+};

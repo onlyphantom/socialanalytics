@@ -8,7 +8,6 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import faker from "faker";
 
 ChartJS.register(
   CategoryScale,
@@ -30,15 +29,7 @@ export const options = {
   interaction: {
     mode: "index",
     intersect: false,
-  },
-  // scales: {
-  //   x: {
-  //     stacked: true,
-  //   },
-  //   y: {
-  //     stacked: true,
-  //   },
-  // },
+  }
 };
 
 const SentimentBar = ({ data }) => {
@@ -51,29 +42,24 @@ const SentimentBar = ({ data }) => {
         label: "Facebook",
         data: data.facebook,
         backgroundColor: "rgb(255, 99, 132)",
-        // stack: "Stack 0",
       },
       {
         label: "Instagram",
         data: data.instagram,
         backgroundColor: "rgb(75, 192, 192)",
-        // stack: "Stack 0",
       },
       {
         label: "Twitter",
         data: data.twitter,
         backgroundColor: "rgb(53, 162, 235)",
-        // stack: "Stack 1",
       },
       {
         label: "YouTube",
         data: data.youtube,
         backgroundColor: "rgb(23, 122, 74)",
-        // stack: "Stack 1",
       },
     ],
   };
-
 
   return <Bar options={options} data={sentimentData} />;
 };

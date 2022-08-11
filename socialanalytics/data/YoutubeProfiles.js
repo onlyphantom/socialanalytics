@@ -1,5 +1,9 @@
 export const YoutubeProfiles = [
     {
+    "value": "UCV7sYsOlkpbHybdIWt7gZbg",
+    "label": "Bank Indonesia"
+    },
+    {
     "value": "UC0oI2vnnEcQCHvbkMvHLzFg",
     "label": "Bank Indonesia Riau"
     },
@@ -130,10 +134,6 @@ export const YoutubeProfiles = [
     {
     "value": "UCUXYzwTp2daeWM5Mxk3Ar4Q",
     "label": "Bank Indonesia Jambi"
-    },
-    {
-    "value": "UCV7sYsOlkpbHybdIWt7gZbg",
-    "label": "Bank Indonesia"
     },
     {
     "value": "UCvazaz7DhA4ZycptUf4t-Qg",
