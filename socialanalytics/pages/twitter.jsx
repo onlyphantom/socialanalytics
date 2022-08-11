@@ -87,7 +87,9 @@ const twitter = () => {
 
   useEffect(() => {
     if(!user){
-      Router.push("/login");
+      if(!localStorage.getItem("BIAuthTokens")){
+        Router.push("/login");
+      }
     }
   }, [user])
 

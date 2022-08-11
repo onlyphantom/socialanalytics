@@ -12,7 +12,9 @@ export default function Home() {
   
   useEffect(() => {
     if(!user){
-      Router.push("/login");
+      if(!localStorage.getItem("BIAuthTokens")){
+        Router.push("/login");
+      }
     }
   }, [user])
   
