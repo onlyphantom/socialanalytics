@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { BarLoader } from "react-spinners";
+import Select from "react-select";
+
+import Image from "next/image";
+import Router from "next/router";
+
 import EngagementLine from "../components/EngagementLine";
 import Layout from "../components/Layout";
 import SentimentBar from "../components/SentimentBar";
-import Image from "next/image";
-import { BarLoader } from "react-spinners";
-import Select from "react-select";
-import { useLogin } from "../context/UserContext";
 
-import { TypeOptions } from "../data/TypeOptions";
 import APICall from "../APICall";
-import Router from "next/router";
+import { useLogin } from "../context/UserContext";
+import { TypeOptions } from "../data/TypeOptions";
 
 const customStyles = {
   input: (base) => ({
@@ -62,7 +64,7 @@ const overview = () => {
     twitter: [],
     youtube: [],
     label: []
-  })
+  });
 
   useEffect(() => {
     if(!user){
@@ -70,7 +72,7 @@ const overview = () => {
         Router.push("/login");
       }
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     setLoading(true);
@@ -144,7 +146,7 @@ const overview = () => {
         setEngagementYoutube(result);
       })
 
-  }, [type])
+  }, [type]);
 
   useEffect(() => {
 
@@ -208,7 +210,7 @@ const overview = () => {
       return obj;
     }, []);
 
-    const combinedEngagement = Array.isArray(facebook) && facebook.concat(instagram, twitter, youtube)
+    const combinedEngagement = Array.isArray(facebook) && facebook.concat(instagram, twitter, youtube);
 
     const label = Array.isArray(combinedEngagement) && Array.from(new Set(combinedEngagement.map(item => item.x)));
 
@@ -218,9 +220,9 @@ const overview = () => {
       twitter: twitter,
       youtube: youtube,
       label: label
-    })
+    });
 
-  }, [engagementFacebook, engagementInstagram, engagementTwitter, engagementYoutube])
+  }, [engagementFacebook, engagementInstagram, engagementTwitter, engagementYoutube]);
 
   if(loading){
     return(
@@ -242,19 +244,19 @@ const overview = () => {
     return (
       <Layout activePage="overview">
         <section className="grid grid-cols-12">
-            <div className="col-start-10 col-span-2">
-              <Select 
-                  options={TypeOptions}
-                  value={type}
-                  defaultValue={type}
-                  onChange={(selected) => {
-                    setType(selected)
-                  }}
-                  placeholder="Select a profile.."
-                  styles={customStyles}
-              />
-            </div>
-          </section>
+          <div className="col-start-10 col-span-2">
+            <Select 
+                options={TypeOptions}
+                value={type}
+                defaultValue={type}
+                onChange={(selected) => {
+                  setType(selected)
+                }}
+                placeholder="Select a profile.."
+                styles={customStyles}
+            />
+          </div>
+        </section>
 
         <h3>Sentiment Analysis</h3>
         <section className="grid grid-cols-12 my-4">
@@ -275,7 +277,7 @@ const overview = () => {
           </div>
         </section>
       </Layout>
-    )
+    );
   };
 };
 

@@ -1,25 +1,24 @@
-import { startTransition, useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-
+import { BarLoader } from "react-spinners";
 import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import { format } from "date-fns";
+import { registerLocale } from "react-datepicker";
 
-import id from "date-fns/locale/id";
-registerLocale("id", id);
+import Router from "next/router";
+import Image from "next/image";
 
-import "react-datepicker/dist/react-datepicker.css";
+import Layout from "../components/Layout";
 import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
 import Table from "../components/Table";
-import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
-import { YoutubeProfiles } from "../data/YoutubeProfiles";
 import { useLogin } from "../context/UserContext";
-import Router from "next/router";
+import { YoutubeProfiles } from "../data/YoutubeProfiles";
+import { format } from "date-fns";
+import id from "date-fns/locale/id";
+registerLocale("id", id);
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
   input: (base) => ({
@@ -91,14 +90,14 @@ const youtube = () => {
         Router.push("/login");
       }
     }
-  }, [user])
+  }, [user]);
   
   useEffect(() => {
     APICall.getYoutubeEngagements()
       .then((response) => {
         setTableData(response);
       })
-  }, [])
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -121,7 +120,7 @@ const youtube = () => {
         setLoading(false);
       })
 
-  }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading])
+  }, [selectedProfile, startDate, endDate, setProfile, setPosts, setComments, setLoading]);
 
   useEffect(() => {
     const sentiments = Array.isArray(comments) && comments.reduce(function(obj, v) {
@@ -209,7 +208,7 @@ const youtube = () => {
       return obj;
     }, []);
 
-    label = Array.isArray(label) && Array.from(new Set(label))
+    label = Array.isArray(label) && Array.from(new Set(label));
     
     setAggregate({
       engagement_count: engagements,
@@ -224,7 +223,7 @@ const youtube = () => {
       label: label
     });
 
-  }, [comments, posts])
+  }, [comments, posts]);
 
   if(loading){
     return(
@@ -245,7 +244,6 @@ const youtube = () => {
   } else {
     return (
       <Layout activePage="youtube">
-        {/* <h1>Youtube</h1> */}
         <section className="grid grid-cols-12">
           <div className="col-start-9 col-span-3">
             <Select 
@@ -276,12 +274,11 @@ const youtube = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Subscribers</div>
-              <div className="stat-value">{profile.subscribercount === null ? "-" : formatNumber(profile.subscribercount)}</div>
-              {/* <div className="stat-desc">Jan 1st - Feb 1st</div> */}
+              <div className="stat-value">{ profile.subscribercount === null ? "-" : formatNumber(profile.subscribercount) }</div>
             </div>
   
             <div className="stat">
@@ -307,8 +304,7 @@ const youtube = () => {
                 </svg>
               </div>
               <div className="stat-title">Views</div>
-              <div className="stat-value">{profile.viewcount === null ? "-" : formatNumber(profile.viewcount)}</div>
-              {/* <div className="stat-desc">↗︎ 400 (22%)</div> */}
+              <div className="stat-value">{ profile.viewcount === null ? "-" : formatNumber(profile.viewcount) }</div>
             </div>
               
             <div className="stat">
@@ -324,12 +320,11 @@ const youtube = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Videos</div>
-              <div className="stat-value">{profile.videocount === null ? "-" : formatNumber(profile.videocount)}</div>
-              {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
+              <div className="stat-value">{ profile.videocount === null ? "-" : formatNumber(profile.videocount) }</div>
             </div>
           </div>
         </section>
@@ -339,7 +334,6 @@ const youtube = () => {
             <h5>Comments' Sentiment Analysis</h5>
           </div>
           <div className="col-start-7 col-span-5 flex gap-x-2 max-w-xs">
-            {/* https://github.com/Hacker0x01/react-datepicker */}
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={startDate}
@@ -369,15 +363,15 @@ const youtube = () => {
         </section>
   
         <section className="grid grid-cols-12 my-5">
-            {
-              Array.isArray(comments) && comments.length > 0 ? (
-                <>
+          {
+            Array.isArray(comments) && comments.length > 0 ? (
+              <>
                 <div className="col-span-4">
                   <DonutPercent data={aggregate}/>
                 </div>
                 <div className="col-start-7 col-span-5">
                   <div className="stats stats-vertical shadow">
-                  <div className="stat">
+                    <div className="stat">
                       <div className="stat-title">Positive Comments</div>
                       <div className="stat-value">{formatNumber(aggregate.sentiment_count.POSITIVE)}</div>
                       <div className="stat-desc">
@@ -394,41 +388,37 @@ const youtube = () => {
                         {format(endDate, "MMMM do, yyyy")}
                       </div>
                     </div>
-                    {/* <div className="stat">
-                      <div className="stat-title">New Registers</div>
-                      <div className="stat-value">1,200</div>
-                      <div className="stat-desc">↘︎ 90 (14%)</div>
-                    </div> */}
                   </div>
                 </div>
-                </> 
-               ) : (
-                <div className="col-span-4">
-                  <div className="stat-title">No comments available.</div>  
-                </div>
-               )
-            }
-        </section>
-        {
-            Array.isArray(posts) && posts.length > 0 ? (
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-6">
-                  <h5>Engagement Rate Analysis</h5>
-                  <EngagementLine data={lineData} media="youtube"/>
-                </div>
-                <div className="col-span-6 ml-5">
-                  <h5>Significant Variables</h5>
-                  <div className="tabs">
-                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
-                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
-                  </div>
-                  <div className="tab-content">
-                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
-                  </div>
-                </div>
-              </section>
+              </> 
             ) : (
-              <>
+              <div className="col-span-4">
+                <div className="stat-title">No comments available.</div>  
+              </div>
+            )
+          }
+        </section>
+
+        {
+          Array.isArray(posts) && posts.length > 0 ? (
+            <section className="grid grid-cols-12 my-5">
+              <div className="col-span-6">
+                <h5>Engagement Rate Analysis</h5>
+                <EngagementLine data={lineData} media="youtube"/>
+              </div>
+              <div className="col-span-6 ml-5">
+                <h5>Significant Variables</h5>
+                <div className="tabs">
+                  <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                  <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
+                </div>
+                <div className="tab-content">
+                  <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <>
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
@@ -445,12 +435,12 @@ const youtube = () => {
                   </div>
                 </div>
               </section>
-              </>
-            )
+            </>
+          )
         } 
       </Layout>
     );
-  }
+  };
 };
 
 export default youtube;

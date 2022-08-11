@@ -1,24 +1,24 @@
-import { startTransition, useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-
+import { BarLoader } from "react-spinners";
 import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import { format } from "date-fns";
-import id from "date-fns/locale/id";
-registerLocale("id", id);
+import { registerLocale } from "react-datepicker";
 
-import "react-datepicker/dist/react-datepicker.css";
+import Router from "next/router";
+import Image from "next/image";
+
+import Layout from "../components/Layout";
 import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
 import Table from "../components/Table";
-import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
-import { InstagramProfiles } from "../data/InstagramProfiles";
 import { useLogin } from "../context/UserContext";
-import Router from "next/router";
+import { InstagramProfiles } from "../data/InstagramProfiles";
+import { format } from "date-fns";
+import id from "date-fns/locale/id";
+registerLocale("id", id);
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
   input: (base) => ({
@@ -89,14 +89,14 @@ const instagram = () => {
         Router.push("/login");
       }
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     APICall.getInstagramEngagements()
       .then((response) => {
         setTableData(response);
       })
-  }, [])
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -193,7 +193,7 @@ const instagram = () => {
       return obj;
     }, []);
 
-    label = Array.isArray(label) && Array.from(new Set(label))
+    label = Array.isArray(label) && Array.from(new Set(label));
     
     setAggregate({
       engagement_count: engagements,
@@ -207,7 +207,7 @@ const instagram = () => {
       label: label
     });
 
-  }, [comments, posts])
+  }, [comments, posts]);
 
   if(loading){
     return(
@@ -228,7 +228,6 @@ const instagram = () => {
   } else {
     return (
       <Layout activePage="instagram">
-        {/* <h1>Facebook</h1> */}
         <section className="grid grid-cols-12">
           <div className="col-start-9 col-span-3">
             <Select 
@@ -259,12 +258,11 @@ const instagram = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Followers</div>
-              <div className="stat-value">{profile.follower_count === null ? "-" : formatNumber(profile.follower_count)}</div>
-              {/* <div className="stat-desc">Jan 1st - Feb 1st</div> */}
+              <div className="stat-value">{ profile.follower_count === null ? "-" : formatNumber(profile.follower_count) }</div>
             </div>
   
             <div className="stat">
@@ -280,12 +278,11 @@ const instagram = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Following</div>
-              <div className="stat-value">{profile.following_count === null ? "-" : formatNumber(profile.following_count)}</div>
-              {/* <div className="stat-desc">↗︎ 400 (22%)</div> */}
+              <div className="stat-value">{ profile.following_count === null ? "-" : formatNumber(profile.following_count) }</div>
             </div>
               
             <div className="stat">
@@ -301,12 +298,11 @@ const instagram = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Posts</div>
-              <div className="stat-value">{profile.media_count === null ? "-" : formatNumber(profile.media_count)}</div>
-              {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
+              <div className="stat-value">{ profile.media_count === null ? "-" : formatNumber(profile.media_count) }</div>
             </div>
           </div>
         </section>
@@ -316,7 +312,6 @@ const instagram = () => {
             <h5>Comments' Sentiment Analysis</h5>
           </div>
           <div className="col-start-7 col-span-5 flex gap-x-2 max-w-xs">
-            {/* https://github.com/Hacker0x01/react-datepicker */}
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={startDate}
@@ -346,15 +341,15 @@ const instagram = () => {
         </section>
   
         <section className="grid grid-cols-12 my-5">
-            {
-              Array.isArray(comments) && comments.length > 0 ? (
-                <>
+          {
+            Array.isArray(comments) && comments.length > 0 ? (
+              <>
                 <div className="col-span-4">
                   <DonutPercent data={aggregate}/>
                 </div>
                 <div className="col-start-7 col-span-5">
                   <div className="stats stats-vertical shadow">
-                  <div className="stat">
+                    <div className="stat">
                       <div className="stat-title">Positive Comments</div>
                       <div className="stat-value">{formatNumber(aggregate.sentiment_count.POSITIVE)}</div>
                       <div className="stat-desc">
@@ -371,41 +366,37 @@ const instagram = () => {
                         {format(endDate, "MMMM do, yyyy")}
                       </div>
                     </div>
-                    {/* <div className="stat">
-                      <div className="stat-title">New Registers</div>
-                      <div className="stat-value">1,200</div>
-                      <div className="stat-desc">↘︎ 90 (14%)</div>
-                    </div> */}
                   </div>
                 </div>
-                </> 
-               ) : (
-                <div className="col-span-4">
-                  <div className="stat-title">No comments available.</div>  
-                </div>
-               )
-            }
-        </section>
-        {
-            Array.isArray(posts) && posts.length > 0 ? (
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-6">
-                  <h5>Engagement Rate Analysis</h5>
-                  <EngagementLine data={lineData} media="instagram"/>
-                </div>
-                <div className="col-span-6 ml-5">
-                  <h5>Significant Variables</h5>
-                  <div className="tabs">
-                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
-                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
-                  </div>
-                  <div className="tab-content">
-                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
-                  </div>
-                </div>
-              </section>
+              </> 
             ) : (
-              <>
+              <div className="col-span-4">
+                <div className="stat-title">No comments available.</div>  
+              </div>
+            )
+          }
+        </section>
+
+        {
+          Array.isArray(posts) && posts.length > 0 ? (
+            <section className="grid grid-cols-12 my-5">
+              <div className="col-span-6">
+                <h5>Engagement Rate Analysis</h5>
+                <EngagementLine data={lineData} media="instagram"/>
+              </div>
+              <div className="col-span-6 ml-5">
+                <h5>Significant Variables</h5>
+                <div className="tabs">
+                  <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                  <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
+                </div>
+                <div className="tab-content">
+                  <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <>
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
@@ -422,12 +413,12 @@ const instagram = () => {
                   </div>
                 </div>
               </section>
-              </>
-            )
+            </>
+          )
         } 
       </Layout>
     );
-  }
+  };
 };
 
 export default instagram;

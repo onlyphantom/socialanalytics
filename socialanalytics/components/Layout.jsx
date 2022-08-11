@@ -2,9 +2,10 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import Router from "next/router";
+
 import { useLogin } from "../context/UserContext";
 import styles from "../styles/Home.module.css";
-import Router from "next/router";
 
 const Layout = ({ children, activePage }) => {
   const { logoutUser } = useLogin();
@@ -21,7 +22,6 @@ const Layout = ({ children, activePage }) => {
 
         <main>
           <div>
-            {/* <!-- Page content here --> */}
             <label
               htmlFor="side-drawer"
               className="btn btn-primary drawer-button lg:hidden"
@@ -46,8 +46,9 @@ const Layout = ({ children, activePage }) => {
             </div>
           </div>
         </main>
+
       </div>
-      {/* <!-- End of drawer --> */}
+
       <div className="drawer-side">
         <label htmlFor="side-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
@@ -69,26 +70,31 @@ const Layout = ({ children, activePage }) => {
               <a>Overview</a>
             </Link>
           </li>
+          
           <li className={ activePage==="facebook" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/facebook">
               <a>Facebook</a>
             </Link>
           </li>
+
           <li className={ activePage==="instagram" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/instagram">
               <a>Instagram</a>
             </Link>
           </li>
+
           <li className={ activePage==="twitter" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/twitter">
               <a>Twitter</a>
             </Link>
           </li>
+          
           <li className={ activePage==="youtube" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/youtube">
               <a>YouTube</a>
             </Link>
           </li>
+
           <li className="absolute bottom-3">
             <button onClick={() => {
               logoutUser();

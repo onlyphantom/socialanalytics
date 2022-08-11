@@ -1,25 +1,24 @@
-import { startTransition, useEffect, useState } from "react";
-import Layout from "../components/Layout";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Select from "react-select";
-
+import { BarLoader } from "react-spinners";
 import DatePicker from "react-datepicker";
-import { registerLocale, setDefaultLocale } from "react-datepicker";
-import { format } from "date-fns";
+import { registerLocale } from "react-datepicker";
 
-import id from "date-fns/locale/id";
-registerLocale("id", id);
+import Router from "next/router";
+import Image from "next/image";
 
-import "react-datepicker/dist/react-datepicker.css";
+import Layout from "../components/Layout";
 import DonutPercent from "../components/DonutPercent";
 import EngagementLine from "../components/EngagementLine";
 import Table from "../components/Table";
-import { BarLoader } from "react-spinners";
 
 import APICall from "../APICall";
-import { FacebookProfiles } from "../data/FacebookProfiles";
 import { useLogin } from "../context/UserContext";
-import Router from "next/router";
+import { FacebookProfiles } from "../data/FacebookProfiles";
+import { format } from "date-fns";
+import id from "date-fns/locale/id";
+registerLocale("id", id);
+import "react-datepicker/dist/react-datepicker.css";
 
 const customStyles = {
   input: (base) => ({
@@ -91,7 +90,7 @@ const facebook = () => {
         Router.push("/login");
       }
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     APICall.getFacebookEngagements()
@@ -210,7 +209,7 @@ const facebook = () => {
       return obj;
     }, []);
 
-    label = Array.isArray(label) && Array.from(new Set(label))
+    label = Array.isArray(label) && Array.from(new Set(label));
     
     setAggregate({
       engagement_count: engagements,
@@ -246,7 +245,6 @@ const facebook = () => {
   } else {
     return (
       <Layout activePage="facebook">
-        {/* <h1>Facebook</h1> */}
         <section className="grid grid-cols-12">
           <div className="col-start-9 col-span-3">
             <Select 
@@ -277,12 +275,11 @@ const facebook = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Followers</div>
-              <div className="stat-value">{profile.follower_count === null ? "-" : formatNumber(profile.follower_count)}</div>
-              {/* <div className="stat-desc">Jan 1st - Feb 1st</div> */}
+              <div className="stat-value">{ profile.follower_count === null ? "-" : formatNumber(profile.follower_count) }</div>
             </div>
   
             <div className="stat">
@@ -298,12 +295,11 @@ const facebook = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Following</div>
-              <div className="stat-value">{profile.following_count === null ? "-" : formatNumber(profile.following_count)}</div>
-              {/* <div className="stat-desc">↗︎ 400 (22%)</div> */}
+              <div className="stat-value">{ profile.following_count === null ? "-" : formatNumber(profile.following_count) }</div>
             </div>
               
             <div className="stat">
@@ -319,12 +315,11 @@ const facebook = () => {
                     strokeLinejoin="round"
                     strokeWidth="2"
                     d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                  ></path>
+                  />
                 </svg>
               </div>
               <div className="stat-title">Likes</div>
-              <div className="stat-value">{profile.likes === null ? "-" : formatNumber(profile.likes)}</div>
-              {/* <div className="stat-desc">↘︎ 90 (14%)</div> */}
+              <div className="stat-value">{ profile.likes === null ? "-" : formatNumber(profile.likes) }</div>
             </div>
           </div>
         </section>
@@ -334,7 +329,6 @@ const facebook = () => {
             <h5>Comments' Sentiment Analysis</h5>
           </div>
           <div className="col-start-7 col-span-5 flex gap-x-2 max-w-xs">
-            {/* https://github.com/Hacker0x01/react-datepicker */}
             <DatePicker
               dateFormat="dd/MM/yyyy"
               selected={startDate}
@@ -367,35 +361,30 @@ const facebook = () => {
             {
               Array.isArray(comments) && comments.length > 0 ? (
                 <>
-                <div className="col-span-4">
-                  <DonutPercent data={aggregate}/>
-                </div>
-                <div className="col-start-7 col-span-5">
-                  <div className="stats stats-vertical shadow">
-                  <div className="stat">
-                      <div className="stat-title">Positive Comments</div>
-                      <div className="stat-value">{formatNumber(aggregate.sentiment_count.POSITIVE)}</div>
-                      <div className="stat-desc">
-                        {format(startDate, "MMMM do, yyyy")} -
-                        {format(endDate, "MMMM do, yyyy")}
-                      </div>
-                    </div>
-
-                    <div className="stat">
-                      <div className="stat-title">Positive Reactions</div> 
-                      <div className="stat-value">{formatNumber(aggregate.engagement_count.FAVORITES)}</div>
-                      <div className="stat-desc">
-                        {format(startDate, "MMMM do, yyyy")} -
-                        {format(endDate, "MMMM do, yyyy")}
-                      </div>
-                    </div>
-                    {/* <div className="stat">
-                      <div className="stat-title">New Registers</div>
-                      <div className="stat-value">1,200</div>
-                      <div className="stat-desc">↘︎ 90 (14%)</div>
-                    </div> */}
+                  <div className="col-span-4">
+                    <DonutPercent data={aggregate}/>
                   </div>
-                </div>
+                  <div className="col-start-7 col-span-5">
+                    <div className="stats stats-vertical shadow">
+                      <div className="stat">
+                        <div className="stat-title">Positive Comments</div>
+                        <div className="stat-value">{formatNumber(aggregate.sentiment_count.POSITIVE)}</div>
+                        <div className="stat-desc">
+                          {format(startDate, "MMMM do, yyyy")} -
+                          {format(endDate, "MMMM do, yyyy")}
+                        </div>
+                      </div>
+
+                      <div className="stat">
+                        <div className="stat-title">Positive Reactions</div> 
+                        <div className="stat-value">{formatNumber(aggregate.engagement_count.FAVORITES)}</div>
+                        <div className="stat-desc">
+                          {format(startDate, "MMMM do, yyyy")} -
+                          {format(endDate, "MMMM do, yyyy")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </> 
                ) : (
                 <div className="col-span-4">
@@ -404,26 +393,27 @@ const facebook = () => {
                )
             }
         </section>
+
         {
-            Array.isArray(posts) && posts.length > 0 ? (
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-6 mr-5">
-                  <h5>Engagement Rate Analysis</h5>
-                  <EngagementLine data={lineData} media="facebook"/>
+          Array.isArray(posts) && posts.length > 0 ? (
+            <section className="grid grid-cols-12 my-5">
+              <div className="col-span-6 mr-5">
+                <h5>Engagement Rate Analysis</h5>
+                <EngagementLine data={lineData} media="facebook"/>
+              </div>
+              <div className="col-span-6 ml-5">
+                <h5>Significant Variables</h5>
+                <div className="tabs">
+                  <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                  <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                 </div>
-                <div className="col-span-6 ml-5">
-                  <h5>Significant Variables</h5>
-                  <div className="tabs">
-                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
-                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
-                  </div>
-                  <div className="tab-content">
-                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
-                  </div>
+                <div className="tab-content">
+                  <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
                 </div>
-              </section>
-            ) : (
-              <>
+              </div>
+            </section>
+          ) : (
+            <>
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
@@ -440,12 +430,12 @@ const facebook = () => {
                   </div>
                 </div>
               </section>
-              </>
-            )
+            </>
+          )
         } 
       </Layout>
     );
-  }
+  };
 };
 
 export default facebook;

@@ -1,12 +1,11 @@
+import { useEffect } from 'react';
+
 import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import Router from 'next/router';
 
 import { useLogin } from '../context/UserContext';
-import Router from 'next/router';
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
+import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const { user } = useLogin();
@@ -17,7 +16,7 @@ export default function Home() {
         Router.push("/login");
       }
     }
-  }, [user])
+  }, [user]);
 
   return (
     <Layout>
@@ -33,7 +32,6 @@ export default function Home() {
 
           <main>
             <div>
-              {/* <!-- Page content here --> */}
               <h1 className={styles.title}>
                 Social Media Analytics
               </h1>
@@ -49,8 +47,9 @@ export default function Home() {
               </a>
             </footer>
           </main>
+
         </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
