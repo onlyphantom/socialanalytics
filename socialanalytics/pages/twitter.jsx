@@ -91,12 +91,12 @@ const twitter = () => {
     }
   }, [user])
 
-  // useEffect(() => {
-  //   APICall.getTwitterEngagements()
-  //     .then((response) => {
-  //       setTableData(response);
-  //     })
-  // }, [setTableData])
+  useEffect(() => {
+    APICall.getTwitterEngagements()
+      .then((response) => {
+        setTableData(response);
+      })
+  }, [])
 
   useEffect(() => {
     setLoading(true);
@@ -415,7 +415,7 @@ const twitter = () => {
                     <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
                   </div>
                   <div className="tab-content">
-                    {/* <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/> */}
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
                   </div>
                 </div>
               </section>
@@ -424,12 +424,17 @@ const twitter = () => {
               <section className="grid grid-cols-12 my-5">
                 <div className="col-span-6">
                   <h5>Engagement Rate Analysis</h5>
+                  <div className="stat-title my-5">No posts available.</div>  
                 </div>
-              </section>
-
-              <section className="grid grid-cols-12 my-5">
-                <div className="col-span-4">
-                  <div className="stat-title">No posts available.</div>  
+                <div className="col-span-6 ml-5">
+                  <h5>Significant Variables</h5>
+                  <div className="tabs">
+                    <a className={activeTab === "positive" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("positive")}}>Positive</a>
+                    <a className={activeTab === "negative" ? "tab tab-bordered tab-active" : "tab tab-bordered"} onClick={() => {setActiveTab("negative")}}>Negative</a>
+                  </div>
+                  <div className="tab-content">
+                    <Table data={tableData} activeTab={activeTab} rowsPerPage={4}/>
+                  </div>
                 </div>
               </section>
               </>

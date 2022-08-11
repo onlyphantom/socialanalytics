@@ -14,53 +14,19 @@ const sliceData = (data, page, rowsPerPage) => {
   return data.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 };
 
-const TableFooter = ({ range, setPage, page, slice }) => {
+const Table = ({ data, activeTab, rowsPerPage }) => {
+  
+  data = data.filter((row) => row.significant_type === activeTab);
+
+  const [page, setPage] = useState(1);
+  const tableRange = calculateRange(data, rowsPerPage);
+  const slice = sliceData(data, page, rowsPerPage);
+  
   useEffect(() => {
     if (slice.length < 1 && page !== 1) {
       setPage(page - 1);
     }
   }, [slice, page, setPage]);
-
-  return (
-    <div className="tableFooter">
-      <button
-        className={`tableButton ${
-          page === 1 ? "tableInactiveButton" : "tableActiveButton"
-        }`}
-        onClick={() => setPage(page-1)}
-        disabled={page === 1 ? true : false}
-      >
-        Prev
-      </button>
-      <button
-        className={`tableButton ${
-          page === range.length ? "tableInactiveButton" : "tableActiveButton"
-        }`}
-        onClick={() => setPage(page+1)}
-        disabled={page === range.length ? true : false}
-      >
-        Next
-      </button>
-    </div>
-  );
-};
-
-
-const Table = ({ data, activeTab, rowsPerPage }) => {
-  
-  data = Array.isArray(data) && data.filter((row) => row.significant_type === activeTab);
-
-  const [page, setPage] = useState(1);
-  const [tableRange, setTableRange] = useState([]);
-  const [slice, setSlice] = useState([]);
-
-  useEffect(() => {
-    const range = calculateRange(data, rowsPerPage);
-    setTableRange([...range]);
-
-    const slice = sliceData(data, page, rowsPerPage);
-    setSlice([...slice]);
-  }, [data, setTableRange, page, setSlice]);
 
   return (
     <>
@@ -82,7 +48,26 @@ const Table = ({ data, activeTab, rowsPerPage }) => {
             ))}
           </tbody>
         </table>
-        <TableFooter range={tableRange} slice={slice} setPage={setPage} page={page} />
+        <div className="tableFooter">
+          <button
+            className={`tableButton ${
+              page === 1 ? "tableInactiveButton" : "tableActiveButton"
+            }`}
+            onClick={() => setPage(page-1)}
+            disabled={page === 1 ? true : false}
+          >
+            Prev
+          </button>
+          <button
+            className={`tableButton ${
+              page === tableRange.length ? "tableInactiveButton" : "tableActiveButton"
+            }`}
+            onClick={() => setPage(page+1)}
+            disabled={page === tableRange.length ? true : false}
+          >
+            Next
+          </button>
+        </div>
       </div>
     ) : (
       <div className="stat-title my-3">No data available.</div>  
