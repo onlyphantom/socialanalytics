@@ -4,29 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
-const Sidebar = () => {
-  return (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <h3>Sidebar</h3>
-      </div>
-      <div className="sidebar-content">
-        <ul>
-          <li>
-            <a href="#">Overview</a>
-          </li>
-          <li>
-            <a href="#">Facebook</a>
-          </li>
-          <li>
-            <a href="#">Twitter</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
-};
-
 const Layout = ({ children, activePage }) => {
   return (
     <div className="drawer drawer-mobile">
@@ -102,27 +79,27 @@ const Layout = ({ children, activePage }) => {
             </a>
           </Link>
 
-          <li>
+          <li className={ activePage==="overview" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/overview">
               <a>Overview</a>
             </Link>
           </li>
-          <li>
+          <li className={ activePage==="facebook" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/facebook">
               <a>Facebook</a>
             </Link>
           </li>
-          <li>
+          <li className={ activePage==="instagram" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/instagram">
               <a>Instagram</a>
             </Link>
           </li>
-          <li>
+          <li className={ activePage==="twitter" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/twitter">
               <a>Twitter</a>
             </Link>
           </li>
-          <li>
+          <li className={ activePage==="youtube" ? "rounded-lg bg-gray-700" : ""}>
             <Link href="/youtube">
               <a>YouTube</a>
             </Link>

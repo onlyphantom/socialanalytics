@@ -5,41 +5,11 @@ import SentimentBar from "../components/SentimentBar";
 import Image from "next/image";
 import { BarLoader } from "react-spinners";
 import Select from "react-select";
+import { useLogin } from "../context/UserContext";
 
 import { TypeOptions } from "../data/TypeOptions";
-import faker from "faker";
 import APICall from "../APICall";
-
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Facebook",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
-    },
-    {
-      label: "Instagram",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(75, 192, 192)",
-      backgroundColor: "rgba(75, 192, 192, 0.5)",
-    },
-    {
-      label: "Twitter",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(53, 162, 235)",
-      backgroundColor: "rgba(53, 162, 235, 0.5)",
-    },
-    {
-      label: "YouTube",
-      data: labels.map(() => faker.datatype.number({ min: -1000, max: 1000 })),
-      borderColor: "rgb(23, 122, 74)",
-      backgroundColor: "rgba(23, 122, 74, 0.5)",
-    },
-  ],
-};
+import Router from "next/router";
 
 const customStyles = {
   input: (base) => ({
@@ -74,6 +44,8 @@ const customStyles = {
 };
 
 const overview = () => {
+  const { user } = useLogin();
+
   const [loading, setLoading] = useState(true);
   const [type, setType] = useState(TypeOptions[0]);
   const [sentimentFacebook, setSentimentFacebook] = useState();
@@ -91,6 +63,12 @@ const overview = () => {
     youtube: [],
     label: []
   })
+
+  useEffect(() => {
+    if(!user){
+      Router.push("/login");
+    }
+  }, [user])
 
   useEffect(() => {
     setLoading(true);
