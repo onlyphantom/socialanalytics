@@ -80,7 +80,7 @@ a {
     justify-content: center;
   }
 
-  .login-page > *:nth-child(2) {
+  .login-page>*:nth-child(2) {
     margin-top: 2em;
   }
 }
@@ -127,6 +127,7 @@ a {
     flex-direction: column;
     box-shadow: none;
   }
+
   #login-form {
     max-width: 100%;
   }
@@ -159,6 +160,7 @@ a {
 .login-text h1 {
   color: white;
   font-size: 5rem;
+  line-height: 1em;
   font-weight: bold;
   margin-bottom: 10px;
 }
